@@ -7,6 +7,30 @@ class ChecklistItemsRepository {
   final List<ChecklistItem> _items = [];
   final uuid = Uuid();
 
+  Future<ChecklistItem> getItem(String id) async {
+    final index = _getItemIndex(id: id);
+    return _items[index];
+  }
+
+  Future<List<ChecklistItem>> getItemsForDate({@required DateTime date}) async {
+    return getItemsInDateRange(startDate: date, endDate: date);
+  }
+
+  Future<List<ChecklistItem>> getItemsInDateRange({
+    @required DateTime startDate,
+    @required DateTime endDate,
+  }) async {
+    return _items
+        .where((i) => i.targetDate != null)
+        .where((i) =>
+            i.targetDate.millisecondsSinceEpoch >=
+            startDate.millisecondsSinceEpoch)
+        .where((i) =>
+            i.targetDate.millisecondsSinceEpoch <=
+            endDate.millisecondsSinceEpoch)
+        .toList(growable: false);
+  }
+
   Future<ChecklistItem> insert({
     @required String descritpion,
     DateTime targetDate,
