@@ -15,6 +15,16 @@ class ChecklistItemsDAO {
     return _items.value[index];
   }
 
+  Stream<List<ChecklistItem>> getAllItems() {
+    return _items;
+  }
+
+  Stream<List<ChecklistItem>> getUnscheduledItems() {
+    return _items.map(
+      (list) => list.where((i) => i.targetDate == null).toList(),
+    );
+  }
+
   Stream<List<ChecklistItem>> getItemsForDate({@required DateTime date}) {
     return getItemsInDateRange(startDate: date, endDate: date);
   }
@@ -43,25 +53,11 @@ class ChecklistItemsDAO {
     return item;
   }
 
-  Future<ChecklistItem> update({
-    @required String id,
-    String descritpion,
-    DateTime targetDate,
-  }) async {
-    if ((descritpion == null || descritpion.isEmpty) && targetDate == null) {
-      throw InvalidUpdateArgumentsException();
-    }
-    final index = _getItemIndex(id: id);
+  Future<void> update({@required ChecklistItem item}) async {
+    final index = _getItemIndex(id: item.id);
     final items = _items.value;
-    final item = items[index];
-    final updatedItem = ChecklistItem(
-      id: id,
-      description: descritpion ?? item.description,
-      targetDate: targetDate ?? item.targetDate,
-    );
-    items[index] = updatedItem;
-    _items.add(items);
-    return updatedItem;
+    items[index] = item;
+    return _items.add(items);
   }
 
   Future<void> delete({@required String id}) async {
