@@ -3,12 +3,13 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   uuid: ^2.0.2
+  rxdart: ^0.22.3
 
 dev_dependencies:
   flutter_test:
