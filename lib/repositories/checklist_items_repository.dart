@@ -1,22 +1,19 @@
-import 'dart:async';
-
-import 'package:checklist/exceptions/custom_exceptions.dart';
+import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/models/checklist_item.dart';
-import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 class ChecklistItemsRepository {
-  final _items = BehaviorSubject<List<ChecklistItem>>.seeded([]);
-  final uuid = Uuid();
+  final ChecklistItemsDAO _dao;
+
+  ChecklistItemsRepository(this._dao);
 
   void dispose() {
-    _items.close();
+    _dao.dispose();
   }
 
-  Future<ChecklistItem> getItem(String id) async {
-    final index = _getItemIndex(id: id);
-    return _items.value[index];
+  Future<ChecklistItem> getItem(String id) {
+    return _dao.getItem(id);
   }
 
   Stream<List<ChecklistItem>> getItemsForDate({@required DateTime date}) {
@@ -27,33 +24,20 @@ class ChecklistItemsRepository {
     @required DateTime startDate,
     @required DateTime endDate,
   }) {
-    return _items.map(
-      (list) => list
-          .where((i) => i.targetDate != null)
-          .where((i) =>
-              i.targetDate.millisecondsSinceEpoch >=
-              startDate.millisecondsSinceEpoch)
-          .where((i) =>
-              i.targetDate.millisecondsSinceEpoch <=
-              endDate.millisecondsSinceEpoch)
-          .toList(),
-    );
+    return _dao.getItemsInDateRange(startDate: startDate, endDate: endDate);
   }
 
   Future<ChecklistItem> insert({
     @required String descritpion,
     DateTime targetDate,
   }) async {
-    final id = uuid.v1();
+    final id = Uuid().v1();
     final item = ChecklistItem(
       id: id,
       description: descritpion,
       targetDate: targetDate,
     );
-    final list = _items.value;
-    list.add(item);
-    _items.add(list);
-    return item;
+    return _dao.insert(item: item);
   }
 
   Future<ChecklistItem> update({
@@ -61,33 +45,14 @@ class ChecklistItemsRepository {
     String descritpion,
     DateTime targetDate,
   }) async {
-    if ((descritpion == null || descritpion.isEmpty) && targetDate == null) {
-      throw InvalidUpdateArgumentsException();
-    }
-    final index = _getItemIndex(id: id);
-    final items = _items.value;
-    final item = items[index];
-    final updatedItem = ChecklistItem(
+    return _dao.update(
       id: id,
-      description: descritpion ?? item.description,
-      targetDate: targetDate ?? item.targetDate,
+      descritpion: descritpion,
+      targetDate: targetDate,
     );
-    items[index] = updatedItem;
-    _items.add(items);
-    return updatedItem;
   }
 
-  Future<void> delete({@required String id}) async {
-    final list = _items.value;
-    list.removeWhere((item) => item.id == id);
-    return _items.add(list);
-  }
-
-  int _getItemIndex({@required id}) {
-    final index = _items.value.indexWhere((item) => item.id == id);
-    if (index == null) {
-      throw ItemNotFoundException(id);
-    }
-    return index;
+  Future<void> delete({@required String id}) {
+    return _dao.delete(id: id);
   }
 }
