@@ -1,13 +1,19 @@
+import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+class MockDao extends Mock implements ChecklistItemsDAO {}
 
 void main() {
   ChecklistItemsRepository repo;
+  MockDao mockDao;
 
   setUpAll(() {
-    repo = ChecklistItemsRepository();
+    mockDao = MockDao();
+    repo = ChecklistItemsRepository(mockDao);
   });
 
   tearDownAll(() {
@@ -20,16 +26,6 @@ void main() {
   }
 
   group("Item insert", () {
-    test("NULL Description", () async {
-      expectLater(() => repo.insert(descritpion: null),
-          throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
-    }, skip: true);
-
-    test("Valid Description", () async {
-      final item = await repo.insert(descritpion: "Description of ToDo");
-      expect(item.description, "Description of ToDo");
-    });
-
     test("Valid Description", () async {
       final item = await repo.insert(descritpion: "Description of ToDo");
       expect(item.description, "Description of ToDo");
@@ -53,21 +49,20 @@ void main() {
   });
 
   group("Update Item", () {
-    test(
-        "Update item with NULL id should throw InvalidUpdateArgumentsException",
-        () {
-      expectLater(() => repo.update(id: null, descritpion: updatedDesc),
-          throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
-    }, skip: true);
+    setUpAll(() async {
+      await insertDummyItems();
+    });
 
-    test("Updating non existed item should throw ItemNotFoundException", () {
-      expectLater(
+    test("Updating non existed item should throw ItemNotFoundException",
+        () async {
+      when(mockDao.getItem(any)).thenThrow(ItemNotFoundException);
+      await expectLater(
           () => repo.update(
                 id: "ID which not available",
                 descritpion: updatedDesc,
               ),
           throwsA(predicate((e) => e is ItemNotFoundException)));
-    }, skip: true);
+    });
 
     test(
       "NULL desciption should throw InvalidUpdateArgumentsException",

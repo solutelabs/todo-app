@@ -47,10 +47,15 @@ class ChecklistItemsDAO {
   }
 
   Future<ChecklistItem> insert({@required ChecklistItem item}) async {
-    final list = _items.value;
-    list.add(item);
-    _items.add(list);
-    return item;
+    try {
+      await getItem(item.id);
+      throw ItemAlreadyExist();
+    } on ItemNotFoundException {
+      final list = _items.value;
+      list.add(item);
+      _items.add(list);
+      return item;
+    }
   }
 
   Future<void> update({@required ChecklistItem item}) async {
@@ -68,7 +73,7 @@ class ChecklistItemsDAO {
 
   int _getItemIndex({@required id}) {
     final index = _items.value.indexWhere((item) => item.id == id);
-    if (index == null) {
+    if (index == -1) {
       throw ItemNotFoundException(id);
     }
     return index;
