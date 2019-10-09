@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   uuid: ^2.0.2
+  rxdart: ^0.22.3
 
 dev_dependencies:
   flutter_test:
