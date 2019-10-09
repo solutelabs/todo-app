@@ -19,94 +19,64 @@ void main() {
   tearDownAll(() {
     repo = null;
   });
-  final updatedDesc = "New Desc";
-  final date = DateTime.now();
-  Future<ChecklistItem> insertDummyItems() {
-    return repo.insert(descritpion: "TEST ITEM", targetDate: date);
-  }
 
-  group("Item insert", () {
-    test("Valid Description", () async {
-      final item = await repo.insert(descritpion: "Description of ToDo");
-      expect(item.description, "Description of ToDo");
+  test('Get item method should call respective dao method', () async {
+    try {
+      await repo.getItem("id");
+    } catch (_) {}
+    verify(mockDao.getItem("id"));
+  });
+
+  test('Get allItems items method should call respective dao method', () {
+    repo.getAllItems();
+    verify(mockDao.getAllItems());
+  });
+
+  test('Get unscheduled items method should call respective dao method', () {
+    repo.getUnscheduledItems();
+    verify(mockDao.getUnscheduledItems());
+  });
+
+  test(
+      'Get Items for date range method should call respective dao method with same args',
+      () {
+    final date = DateTime.now();
+    repo.getItemsInDateRange(startDate: date, endDate: date);
+    verify(mockDao.getItemsInDateRange(startDate: date, endDate: date));
+  });
+
+  test('Item should be created with provided args', () async {
+    final item = ChecklistItem(id: "1", description: 'data');
+    when(mockDao.insert(item: anyNamed('item')))
+        .thenAnswer((_) => Future.value(item));
+
+    final insertedItem = await repo.insert(descritpion: "data");
+
+    verify(mockDao.insert(item: anyNamed('item')));
+    expect(insertedItem.description, equals('data'));
+  });
+
+  group('Update Item', () {
+    test(
+        'When args validation failed, InvalidUpdateArgumentsException should thrown',
+        () {
+      expectLater(() => repo.update(id: "12", descritpion: null),
+          throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
     });
 
-    test("ToDo With Date", () async {
-      final date = DateTime.now();
-      final item = await repo.insert(
-          descritpion: "Description of ToDo", targetDate: date);
-      expect(item.targetDate, date);
-    });
+    test('Provided args should be updated', () async {
+      final item = ChecklistItem(id: "1", description: 'data');
+      when(mockDao.getItem("1")).thenAnswer((_) => Future.value(item));
 
-    test("ToDo with all properities", () async {
-      final date = DateTime.now();
-      final description = "TEST";
-      final item =
-          await repo.insert(descritpion: description, targetDate: date);
-      expect(item.description, description);
-      expect(item.targetDate, date);
+      final updatedItem = await repo.update(id: "1", descritpion: "New Desc");
+
+      expect(updatedItem.description, equals("New Desc"));
+      verify(mockDao.update(item: updatedItem));
     });
   });
 
-  group("Update Item", () {
-    setUpAll(() async {
-      await insertDummyItems();
-    });
-
-    test("Updating non existed item should throw ItemNotFoundException",
-        () async {
-      when(mockDao.getItem(any)).thenThrow(ItemNotFoundException);
-      await expectLater(
-          () => repo.update(
-                id: "ID which not available",
-                descritpion: updatedDesc,
-              ),
-          throwsA(predicate((e) => e is ItemNotFoundException)));
-    });
-
-    test(
-      "NULL desciption should throw InvalidUpdateArgumentsException",
-      () {
-        expectLater(
-            () => repo.update(
-                  id: "ID which not available",
-                  descritpion: null,
-                ),
-            throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
-      },
-    );
-
-    test(
-      "Empty desciption should throw InvalidUpdateArgumentsException",
-      () {
-        expectLater(
-            () => repo.update(
-                  id: "ID which not available",
-                  descritpion: "",
-                ),
-            throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
-      },
-    );
-
-    test(
-      "Desciption with blank space should throw InvalidUpdateArgumentsException",
-      () {
-        expectLater(
-            () => repo.update(
-                  id: "ID which not available",
-                  descritpion: "  ",
-                ),
-            throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
-      },
-    );
-
-    test("Description should be update properly", () async {
-      final insertedItem = await insertDummyItems();
-      final updatedItem =
-          await repo.update(id: insertedItem.id, descritpion: updatedDesc);
-      expect(updatedItem.id, insertedItem.id);
-      expect(updatedItem.description, updatedDesc);
-      expect(updatedItem.targetDate, date);
-    });
+  test('Delete item method should call respective dao method', () {
+    repo.delete(id: "id");
+    verify(mockDao.delete(id: "id"));
   });
 }
