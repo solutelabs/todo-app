@@ -1,34 +1,43 @@
+import 'dart:async';
+
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class ChecklistItemsRepository {
-  final List<ChecklistItem> _items = [];
+  final _items = BehaviorSubject<List<ChecklistItem>>.seeded([]);
   final uuid = Uuid();
+
+  void dispose() {
+    _items.close();
+  }
 
   Future<ChecklistItem> getItem(String id) async {
     final index = _getItemIndex(id: id);
-    return _items[index];
+    return _items.value[index];
   }
 
-  Future<List<ChecklistItem>> getItemsForDate({@required DateTime date}) async {
+  Stream<List<ChecklistItem>> getItemsForDate({@required DateTime date}) {
     return getItemsInDateRange(startDate: date, endDate: date);
   }
 
-  Future<List<ChecklistItem>> getItemsInDateRange({
+  Stream<List<ChecklistItem>> getItemsInDateRange({
     @required DateTime startDate,
     @required DateTime endDate,
-  }) async {
-    return _items
-        .where((i) => i.targetDate != null)
-        .where((i) =>
-            i.targetDate.millisecondsSinceEpoch >=
-            startDate.millisecondsSinceEpoch)
-        .where((i) =>
-            i.targetDate.millisecondsSinceEpoch <=
-            endDate.millisecondsSinceEpoch)
-        .toList(growable: false);
+  }) {
+    return _items.map(
+      (list) => list
+          .where((i) => i.targetDate != null)
+          .where((i) =>
+              i.targetDate.millisecondsSinceEpoch >=
+              startDate.millisecondsSinceEpoch)
+          .where((i) =>
+              i.targetDate.millisecondsSinceEpoch <=
+              endDate.millisecondsSinceEpoch)
+          .toList(),
+    );
   }
 
   Future<ChecklistItem> insert({
@@ -41,7 +50,9 @@ class ChecklistItemsRepository {
       description: descritpion,
       targetDate: targetDate,
     );
-    _items.add(item);
+    final list = _items.value;
+    list.add(item);
+    _items.add(list);
     return item;
   }
 
@@ -54,22 +65,26 @@ class ChecklistItemsRepository {
       throw InvalidUpdateArgumentsException();
     }
     final index = _getItemIndex(id: id);
-    final item = _items[index];
+    final items = _items.value;
+    final item = items[index];
     final updatedItem = ChecklistItem(
       id: id,
       description: descritpion ?? item.description,
       targetDate: targetDate ?? item.targetDate,
     );
-    _items[index] = updatedItem;
+    items[index] = updatedItem;
+    _items.add(items);
     return updatedItem;
   }
 
   Future<void> delete({@required String id}) async {
-    return _items.removeWhere((item) => item.id == id);
+    final list = _items.value;
+    list.removeWhere((item) => item.id == id);
+    return _items.add(list);
   }
 
   int _getItemIndex({@required id}) {
-    final index = _items.indexWhere((item) => item.id == id);
+    final index = _items.value.indexWhere((item) => item.id == id);
     if (index == null) {
       throw ItemNotFoundException(id);
     }
