@@ -49,11 +49,12 @@ class ItemsListTab extends StatelessWidget {
                           final subtitle = item.targetDate != null
                               ? dateTimeUtils.formatDate(item.targetDate)
                               : '';
-                          // TODO: isCompleted hardcoded
                           return ChecklistCard(
                             title: item.description,
                             subtitle: subtitle,
-                            isCompleted: false,
+                            isCompleted: item.isCompleted,
+                            toggleCompletionStatus: () =>
+                                viewModel.toggleCompletionStatus.add(item),
                           );
                         }, childCount: items.length),
                       );
