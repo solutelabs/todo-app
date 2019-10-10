@@ -12,6 +12,7 @@ dependencies:
   uuid: ^2.0.2
   rxdart: ^0.22.3
   provider: ^3.1.0
+  intl: ^0.16.0
 
 dev_dependencies:
   flutter_test:
