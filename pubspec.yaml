@@ -8,9 +8,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  equatable: ^0.6.1
   uuid: ^2.0.2
   rxdart: ^0.22.3
-  equatable: ^0.6.1
+  provider: ^3.1.0
 
 dev_dependencies:
   flutter_test:
