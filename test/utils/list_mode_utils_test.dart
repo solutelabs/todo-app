@@ -25,4 +25,11 @@ void main() {
       expect(dates['end_date'], DateTimeUtils().endOfMonth(now));
     });
   });
+
+  test('Verify Proper titles', () {
+    expect(utils.getTitle(ListMode.all), equals('All'));
+    expect(utils.getTitle(ListMode.today), equals('Today'));
+    expect(utils.getTitle(ListMode.thisMonth), equals('This Month'));
+    expect(utils.getTitle(ListMode.thisWeek), equals('This Week'));
+  });
 }
