@@ -1,5 +1,7 @@
+import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/pages/add_item_page.dart';
 import 'package:checklist/pages/home/home_page.dart';
+import 'package:checklist/pages/items_list_page.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,15 @@ class App extends StatelessWidget {
         routes: {
           'home': (context) => HomePage(),
           'add_item': (_) => AddItemPage(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == ItemsListPage.routeName) {
+            final listMode = settings.arguments as ListMode;
+            return MaterialPageRoute(
+              builder: (_) => ItemsListPage(listMode: listMode),
+            );
+          }
+          return null;
         },
       ),
     );

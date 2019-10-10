@@ -1,4 +1,5 @@
 import 'package:checklist/models/dashboard_item.dart';
+import 'package:checklist/pages/items_list_page.dart';
 import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/ui_components/dashboard_stats_card.dart';
@@ -42,9 +43,15 @@ class DashboardTab extends StatelessWidget {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             final item = items[index];
-                            return DashboardStatsCard(
-                              title: item.title,
-                              subtitle: item.subtitle,
+                            return GestureDetector(
+                              onTap: () => Navigator.of(context).pushNamed(
+                                ItemsListPage.routeName,
+                                arguments: item.mode,
+                              ),
+                              child: DashboardStatsCard(
+                                title: item.title,
+                                subtitle: item.subtitle,
+                              ),
                             );
                           },
                           childCount: items.length,
