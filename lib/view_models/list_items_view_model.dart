@@ -1,7 +1,7 @@
 import 'package:checklist/models/checklist_item.dart';
+import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/utils/datetime_utils.dart';
-import 'package:checklist/view_models/list_mode.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
