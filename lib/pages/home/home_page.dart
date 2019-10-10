@@ -31,8 +31,8 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: FABBottomAppBar(
         items: [
-          FABBottomAppBarItem(iconData: Icons.home),
-          FABBottomAppBarItem(iconData: Icons.grid_on),
+          FABBottomAppBarItem(iconData: Icons.dashboard),
+          FABBottomAppBarItem(iconData: Icons.list),
         ],
         notchedShape: CircularNotchedRectangle(),
         selectedColor: Theme.of(context).primaryColor,
