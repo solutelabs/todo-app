@@ -12,6 +12,7 @@ class AddItemViewModel {
   final targetDate = BehaviorSubject<DateTime>();
   final targetDateString = BehaviorSubject<String>();
   final onSaveTap = PublishSubject<void>();
+  final onItemSaved = PublishSubject<void>();
   final onError = PublishSubject<String>();
 
   final _subscriptions = CompositeSubscription();
@@ -40,6 +41,7 @@ class AddItemViewModel {
     targetDate.close();
     targetDateString.close();
     onSaveTap.close();
+    onItemSaved.close();
     onError.close();
     _subscriptions.dispose();
   }
@@ -52,11 +54,11 @@ class AddItemViewModel {
       onError.add(errors.map((e) => '• $e').join('\n'));
       return;
     }
-
     await repository.insert(
       descritpion: description.value,
       targetDate: targetDate.value,
     );
+    onItemSaved.add(null);
   }
 
   Map<String, dynamic> validateForm() {
