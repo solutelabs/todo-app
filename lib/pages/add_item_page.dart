@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CreateTaskPage extends StatelessWidget {
+class AddItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
