@@ -41,6 +41,7 @@ class ChecklistItemsRepository {
       id: id,
       description: descritpion,
       targetDate: targetDate,
+      isCompleted: false,
     );
     return _dao.insert(item: item);
   }
@@ -49,8 +50,11 @@ class ChecklistItemsRepository {
     @required String id,
     String descritpion,
     DateTime targetDate,
+    bool isCompleted,
   }) async {
-    if ((descritpion == null || descritpion.isEmpty) && targetDate == null) {
+    if ((descritpion == null || descritpion.isEmpty) &&
+        targetDate == null &&
+        isCompleted == null) {
       throw InvalidUpdateArgumentsException();
     }
     final item = await _dao.getItem(id);
@@ -58,6 +62,7 @@ class ChecklistItemsRepository {
       id: id,
       description: descritpion ?? item.description,
       targetDate: targetDate ?? item.targetDate,
+      isCompleted: isCompleted ?? item.isCompleted,
     );
     await _dao.update(item: updatedItem);
     return updatedItem;

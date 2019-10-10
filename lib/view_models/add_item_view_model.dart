@@ -1,14 +1,18 @@
 import 'package:checklist/repositories/checklist_items_repository.dart';
+import 'package:checklist/utils/datetime_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AddItemViewModel {
   final ChecklistItemsRepository repository;
+  final dateTimeUtils = DateTimeUtils();
 
   final description = BehaviorSubject<String>();
   final targetDate = BehaviorSubject<DateTime>();
+  final targetDateString = BehaviorSubject<String>();
   final onSaveTap = PublishSubject<void>();
+  final onItemSaved = PublishSubject<void>();
   final onError = PublishSubject<String>();
 
   final _subscriptions = CompositeSubscription();
@@ -16,6 +20,11 @@ class AddItemViewModel {
   AddItemViewModel({
     @required this.repository,
   }) {
+    _subscriptions.add(
+      targetDate
+          .map((date) => dateTimeUtils.formatDate(date))
+          .listen(targetDateString.add),
+    );
     _subscriptions.add(
       onSaveTap.throttleTime(Duration(milliseconds: 500)).listen(
         (_) => validateAndSave(),
@@ -30,7 +39,9 @@ class AddItemViewModel {
   void dispose() {
     description.close();
     targetDate.close();
+    targetDateString.close();
     onSaveTap.close();
+    onItemSaved.close();
     onError.close();
     _subscriptions.dispose();
   }
@@ -43,11 +54,11 @@ class AddItemViewModel {
       onError.add(errors.map((e) => '• $e').join('\n'));
       return;
     }
-
     await repository.insert(
       descritpion: description.value,
       targetDate: targetDate.value,
     );
+    onItemSaved.add(null);
   }
 
   Map<String, dynamic> validateForm() {

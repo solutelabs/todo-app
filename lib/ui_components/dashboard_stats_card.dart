@@ -19,7 +19,10 @@ class DashboardStatsCard extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.display3.copyWith(
+                    color: Theme.of(context).cardColor,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             Text(
               subtitle,
@@ -31,7 +34,7 @@ class DashboardStatsCard extends StatelessWidget {
           ],
         ),
       ),
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 4,
     );

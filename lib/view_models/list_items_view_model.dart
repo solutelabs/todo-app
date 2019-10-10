@@ -7,8 +7,10 @@ import 'package:rxdart/rxdart.dart';
 
 class ListItemsViewModel {
   final ItemsProvider itemsProvider;
+
   BehaviorSubject<ListMode> currentMode;
   final items = BehaviorSubject<List<ChecklistItem>>.seeded([]);
+  final toggleCompletionStatus = PublishSubject<ChecklistItem>();
 
   final _subscriptions = CompositeSubscription();
 
@@ -24,11 +26,22 @@ class ListItemsViewModel {
             onError: (err) => debugPrint(err.toString()),
           ),
     );
+
+    _subscriptions.add(
+      toggleCompletionStatus.listen(
+        (item) => itemsProvider.repository.update(
+          id: item.id,
+          isCompleted: !item.isCompleted,
+        ),
+        onError: (err) => debugPrint(err.toString()),
+      ),
+    );
   }
 
   void dispose() {
     currentMode.close();
     items.close();
+    toggleCompletionStatus.close();
     _subscriptions.dispose();
   }
 }
