@@ -10,10 +10,12 @@ dependencies:
     sdk: flutter
   uuid: ^2.0.2
   rxdart: ^0.22.3
+  equatable: ^0.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^4.1.1
 
 flutter:
   uses-material-design: true

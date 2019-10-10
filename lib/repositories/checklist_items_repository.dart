@@ -49,7 +49,7 @@ class ChecklistItemsRepository {
     return _dao.insert(item: item);
   }
 
-  Future<void> update({
+  Future<ChecklistItem> update({
     @required String id,
     String descritpion,
     DateTime targetDate,
@@ -63,7 +63,8 @@ class ChecklistItemsRepository {
       description: descritpion ?? item.description,
       targetDate: targetDate ?? item.targetDate,
     );
-    return _dao.update(item: updatedItem);
+    await _dao.update(item: updatedItem);
+    return updatedItem;
   }
 
   Future<void> delete({@required String id}) {
