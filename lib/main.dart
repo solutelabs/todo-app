@@ -1,5 +1,5 @@
 import 'package:checklist/pages/add_item_page.dart';
-import 'package:checklist/pages/home_page.dart';
+import 'package:checklist/pages/home/home_page.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
