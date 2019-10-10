@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
+        onPressed: () => Navigator.of(context).pushNamed('add_item'),
         child: Icon(Icons.add),
         elevation: 8.0,
       ),
