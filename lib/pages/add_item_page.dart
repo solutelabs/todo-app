@@ -20,26 +20,6 @@ class AddItemPage extends StatelessWidget {
       ),
     );
   }
-
-  Future<void> onTapCalendar(BuildContext context) async {
-    final startDate = DateTime(1900);
-    final endDate = DateTime(2100);
-    final viewModel = Provider.of<AddItemViewModel>(context);
-    final date = await showDatePicker(
-      context: context,
-      firstDate: startDate,
-      initialDate: viewModel.targetDate.hasValue
-          ? viewModel.targetDate.value
-          : DateTime.now(),
-      lastDate: endDate,
-    );
-
-    if (date != null) {
-      final viewModel = Provider.of<AddItemViewModel>(context);
-      final targetDate = DateTimeUtils().startOfDay(date);
-      viewModel.targetDate.add(targetDate);
-    }
-  }
 }
 
 class _AddItemPageBody extends StatefulWidget {
@@ -69,14 +49,17 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AddItemViewModel>(context);
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      onTap: dismissKeyboard,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Create Task'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
-              onPressed: () => viewModel.onSaveTap.add(null),
+              onPressed: () {
+                dismissKeyboard();
+                viewModel.onSaveTap.add(null);
+              },
             )
           ],
         ),
@@ -123,7 +106,10 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.calendar_today),
-          onPressed: () => onTapCalendar(context),
+          onPressed: () async {
+            dismissKeyboard();
+            await onTapCalendar(context);
+          },
         ),
       ),
     );
@@ -147,5 +133,9 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
       final targetDate = DateTimeUtils().startOfDay(date);
       viewModel.targetDate.add(targetDate);
     }
+  }
+
+  void dismissKeyboard() {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }
