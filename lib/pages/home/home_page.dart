@@ -1,5 +1,5 @@
-import 'package:checklist/pages/home/dashboard_tab.dart';
-import 'package:checklist/pages/home/items_list_tab.dart';
+import 'package:checklist/pages/home/dashboard_view.dart';
+import 'package:checklist/pages/home/items_list_view.dart';
 import 'package:checklist/ui_components/fab_bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -63,10 +63,10 @@ class _HomePageState extends State<HomePage> {
     Widget bodyWidget;
     switch (_selectedTab) {
       case _HomePageTabType.dashboard:
-        bodyWidget = DashboardTab();
+        bodyWidget = DashboardView();
         break;
       case _HomePageTabType.list:
-        bodyWidget = ItemsListTab();
+        bodyWidget = ItemsListView();
         break;
     }
     return bodyWidget;

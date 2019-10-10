@@ -8,11 +8,11 @@ import 'package:checklist/view_models/list_items_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ItemsListTab extends StatelessWidget {
+class ItemsListView extends StatelessWidget {
   final ListMode listMode;
   final dateTimeUtils = DateTimeUtils();
 
-  ItemsListTab({
+  ItemsListView({
     this.listMode = ListMode.all,
   });
 

@@ -7,7 +7,7 @@ import 'package:checklist/view_models/dashboard_items_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DashboardTab extends StatelessWidget {
+class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repository = Provider.of<ChecklistItemsRepository>(context);
