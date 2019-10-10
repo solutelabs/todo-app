@@ -19,44 +19,63 @@ class AddItemPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final viewModel = Provider.of<AddItemViewModel>(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Create Task'),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.check),
-                  onPressed: () => viewModel.onSaveTap.add(null),
-                )
-              ],
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  SnackMessageWidget(
-                    messageStream: viewModel.onError,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      onChanged: (text) => viewModel.description.add(text),
-                      style: Theme.of(context).textTheme.title,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration.collapsed(
-                        hintText: 'Enter task descriotion...',
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .title
-                            .copyWith(color: Colors.grey.shade400),
-                      ),
-                    ),
-                  ),
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text('Create Task'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.check),
+                    onPressed: () => viewModel.onSaveTap.add(null),
+                  )
                 ],
               ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.calendar_today),
-              onPressed: () => onTapCalendar(context),
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SnackMessageWidget(
+                      messageStream: viewModel.onError,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        onChanged: (text) => viewModel.description.add(text),
+                        style: Theme.of(context).textTheme.title,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration.collapsed(
+                          hintText: 'Enter task descriotion...',
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .title
+                              .copyWith(color: Colors.grey.shade400),
+                        ),
+                      ),
+                    ),
+                    StreamBuilder<String>(
+                      stream: viewModel.targetDateString,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              'Date: ${snapshot.data}',
+                              style: Theme.of(context).textTheme.subhead,
+                            ),
+                          );
+                        }
+                        return SizedBox();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.calendar_today),
+                onPressed: () => onTapCalendar(context),
+              ),
             ),
           );
         },
@@ -67,10 +86,13 @@ class AddItemPage extends StatelessWidget {
   Future<void> onTapCalendar(BuildContext context) async {
     final startDate = DateTime(1900);
     final endDate = DateTime(2100);
+    final viewModel = Provider.of<AddItemViewModel>(context);
     final date = await showDatePicker(
       context: context,
       firstDate: startDate,
-      initialDate: DateTime.now(),
+      initialDate: viewModel.targetDate.hasValue
+          ? viewModel.targetDate.value
+          : DateTime.now(),
       lastDate: endDate,
     );
 
