@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/ui_components/snack_message_widget.dart';
 import 'package:checklist/utils/datetime_utils.dart';
@@ -13,7 +12,7 @@ class AddItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<AddItemViewModel>(
       builder: (_) => AddItemViewModel(
-        repository: ChecklistItemsRepository(ChecklistItemsDAO()),
+        repository: Provider.of<ChecklistItemsRepository>(context),
       ),
       dispose: (_, bloc) => bloc.dispose(),
       child: Builder(
