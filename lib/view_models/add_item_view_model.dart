@@ -32,7 +32,6 @@ class AddItemViewModel {
     targetDate.close();
     onSaveTap.close();
     onError.close();
-    _subscriptions.clear();
     _subscriptions.dispose();
   }
 
