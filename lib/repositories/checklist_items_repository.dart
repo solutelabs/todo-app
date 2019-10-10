@@ -25,10 +25,6 @@ class ChecklistItemsRepository {
     return _dao.getUnscheduledItems();
   }
 
-  Stream<List<ChecklistItem>> getItemsForDate({@required DateTime date}) {
-    return getItemsInDateRange(startDate: date, endDate: date);
-  }
-
   Stream<List<ChecklistItem>> getItemsInDateRange({
     @required DateTime startDate,
     @required DateTime endDate,
