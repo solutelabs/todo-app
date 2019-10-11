@@ -16,10 +16,11 @@ class App extends StatelessWidget {
     return Provider<ChecklistItemsRepository>(
       builder: (_) => ChecklistItemsRepository(ChecklistItemsDAO()),
       child: MaterialApp(
-        initialRoute: 'home',
+        debugShowCheckedModeBanner: false,
+        initialRoute: HomePage.routeName,
         routes: {
-          'home': (context) => HomePage(),
-          'add_item': (_) => AddItemPage(),
+          HomePage.routeName: (_) => HomePage(),
+          AddItemPage.routeName: (_) => AddItemPage(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == ItemsListPage.routeName) {
@@ -30,6 +31,7 @@ class App extends StatelessWidget {
           }
           return null;
         },
+        theme: ThemeData(fontFamily: 'OpenSans'),
       ),
     );
   }

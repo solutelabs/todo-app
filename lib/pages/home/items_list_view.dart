@@ -8,13 +8,14 @@ import 'package:checklist/view_models/list_items_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ItemsListTab extends StatelessWidget {
+class ItemsListView extends StatelessWidget {
   final ListMode listMode;
   final dateTimeUtils = DateTimeUtils();
 
-  ItemsListTab({
+  ItemsListView({
+    Key key,
     this.listMode = ListMode.all,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ItemsListTab extends StatelessWidget {
                   stream: viewModel.items,
                   builder: (context, snapshot) {
                     final items = snapshot.data;
-                    if (items != null) {
+                    if (items != null && items.length > 0) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate((context, index) {
                           final item = items[index];
@@ -59,8 +60,14 @@ class ItemsListTab extends StatelessWidget {
                         }, childCount: items.length),
                       );
                     }
-                    return SliverToBoxAdapter(
-                      child: SizedBox(),
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "🎉\nYou've finished!",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.display2,
+                        ),
+                      ),
                     );
                   },
                 ),
