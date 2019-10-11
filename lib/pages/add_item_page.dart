@@ -31,6 +31,7 @@ class _AddItemPageBody extends StatefulWidget {
 
 class __AddItemPageStateBody extends State<_AddItemPageBody> {
   StreamSubscription _onItemSavedSubscription;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -80,7 +81,7 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   decoration: InputDecoration.collapsed(
-                    hintText: 'Enter task descriotion...',
+                    hintText: 'Enter task description...',
                     hintStyle: Theme.of(context)
                         .textTheme
                         .title
