@@ -8,6 +8,8 @@ import 'package:checklist/ui_components/fab_bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget with UITraitsMixin {
+  static const routeName = '/home';
+
   @override
   Widget build(BuildContext context) {
     final traits = deriveWidthTrait(context);
@@ -47,7 +49,7 @@ class _CompactHomePageState extends State<CompactHomePage> {
       body: getBody(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('add_item'),
+        onPressed: () => Navigator.of(context).pushNamed(AddItemPage.routeName),
         child: Icon(Icons.add),
         elevation: 8.0,
       ),

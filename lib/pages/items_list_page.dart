@@ -3,7 +3,7 @@ import 'package:checklist/pages/home/items_list_view.dart';
 import 'package:flutter/material.dart';
 
 class ItemsListPage extends StatelessWidget {
-  static const routeName = 'itemsList';
+  static const routeName = '/itemsList';
 
   final ListMode listMode;
 

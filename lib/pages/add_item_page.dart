@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddItemPage extends StatelessWidget {
+  static const routeName = '/addItem';
+
   @override
   Widget build(BuildContext context) {
     return Provider<AddItemViewModel>(
