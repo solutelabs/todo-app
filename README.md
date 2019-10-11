@@ -1,6 +1,6 @@
-# checklist
+# Checklist-App [![Codemagic build status](https://api.codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/status_badge.svg)](https://codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/latest_build)
 
-A new Flutter project.
+A Demo Flutter Project to for Android, iOS, Web, MacOS, and Linux
 
 ## Getting Started
 
