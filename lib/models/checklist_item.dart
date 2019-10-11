@@ -11,7 +11,7 @@ class ChecklistItem extends Equatable {
   const ChecklistItem({
     @required this.id,
     @required this.description,
-    @required this.isCompleted,
+    this.isCompleted = false,
     this.targetDate,
   });
 

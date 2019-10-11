@@ -153,11 +153,15 @@ void main() {
       () async {
         final dao = ChecklistItemsDAO();
         await arrange(dao);
-        final updatedItem =
-            ChecklistItem(id: "1", description: "TEST ITEM ONE");
+        final updatedItem = ChecklistItem(
+          id: "1",
+          description: "TEST ITEM ONE",
+          isCompleted: true,
+        );
         await dao.update(item: updatedItem);
         final item = await dao.getItem("1");
         expect(item.description, equals("TEST ITEM ONE"));
+        expect(item.isCompleted, equals(true));
       },
     );
 
