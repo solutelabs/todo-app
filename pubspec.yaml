@@ -18,6 +18,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^4.1.1
+  build_runner: any
+  build_web_compilers: any
 
 flutter:
   uses-material-design: true
