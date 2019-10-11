@@ -16,9 +16,9 @@ class App extends StatelessWidget {
     return Provider<ChecklistItemsRepository>(
       builder: (_) => ChecklistItemsRepository(ChecklistItemsDAO()),
       child: MaterialApp(
-        initialRoute: 'home',
+        initialRoute: '/',
         routes: {
-          'home': (context) => HomePage(),
+          '/': (context) => HomePage(),
           'add_item': (_) => AddItemPage(),
         },
         onGenerateRoute: (settings) {

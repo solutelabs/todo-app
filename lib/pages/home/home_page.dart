@@ -1,20 +1,42 @@
+import 'package:checklist/mixins/ui_traits_mixin.dart';
+import 'package:checklist/models/list_mode.dart';
+import 'package:checklist/pages/add_item_page.dart';
 import 'package:checklist/pages/home/dashboard_view.dart';
 import 'package:checklist/pages/home/items_list_view.dart';
+import 'package:checklist/pages/items_list_page.dart';
 import 'package:checklist/ui_components/fab_bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-enum _HomePageTabType { dashboard, list }
-
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget with UITraitsMixin {
   @override
-  _HomePageState createState() => _HomePageState(_HomePageTabType.dashboard);
+  Widget build(BuildContext context) {
+    final traits = deriveWidthTrait(context);
+    Widget widget;
+    switch (traits) {
+      case UITrait.compact:
+        widget = CompactHomePage();
+        break;
+      case UITrait.regular:
+        widget = RegularHomePage();
+        break;
+    }
+    return widget;
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  final _tabs = [_HomePageTabType.dashboard, _HomePageTabType.list];
-  _HomePageTabType _selectedTab;
+enum HomeTabs { dashboard, list }
 
-  _HomePageState(this._selectedTab);
+class CompactHomePage extends StatefulWidget {
+  @override
+  _CompactHomePageState createState() =>
+      _CompactHomePageState(HomeTabs.dashboard);
+}
+
+class _CompactHomePageState extends State<CompactHomePage> {
+  final _tabs = [HomeTabs.dashboard, HomeTabs.list];
+  HomeTabs _selectedTab;
+
+  _CompactHomePageState(this._selectedTab);
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +71,10 @@ class _HomePageState extends State<HomePage> {
   String getTitle() {
     String title;
     switch (_selectedTab) {
-      case _HomePageTabType.dashboard:
+      case HomeTabs.dashboard:
         title = 'Dashboard';
         break;
-      case _HomePageTabType.list:
+      case HomeTabs.list:
         title = 'Tasks';
         break;
     }
@@ -62,13 +84,76 @@ class _HomePageState extends State<HomePage> {
   Widget getBody() {
     Widget bodyWidget;
     switch (_selectedTab) {
-      case _HomePageTabType.dashboard:
-        bodyWidget = DashboardView();
+      case HomeTabs.dashboard:
+        bodyWidget = DashboardView(
+          onModeSelected: (mode) => Navigator.of(context).pushNamed(
+            ItemsListPage.routeName,
+            arguments: mode,
+          ),
+        );
         break;
-      case _HomePageTabType.list:
+      case HomeTabs.list:
         bodyWidget = ItemsListView();
         break;
     }
     return bodyWidget;
+  }
+}
+
+class RegularHomePage extends StatefulWidget {
+  @override
+  _RegularHomePageState createState() => _RegularHomePageState();
+}
+
+class _RegularHomePageState extends State<RegularHomePage> {
+  ListMode _currentMode;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentMode = ListMode.all;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 160,
+            child: DashboardView(
+              onModeSelected: (mode) async {
+                setState(() {
+                  _currentMode = mode;
+                  debugPrint(_currentMode.toString());
+                });
+              },
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: ItemsListView(
+              listMode: _currentMode,
+            ),
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: AddItemPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
