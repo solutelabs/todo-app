@@ -5,8 +5,7 @@ import 'package:checklist/pages/items_list_page.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'daos/checklist_items_dao.dart';
+import 'package:checklist/daos/checklist_items_dao.dart';
 
 void main() => runApp(App());
 
