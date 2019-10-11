@@ -135,6 +135,7 @@ class _RegularHomePageState extends State<RegularHomePage> {
           Expanded(
             flex: 4,
             child: ItemsListView(
+              key: Key(_currentMode.toString()),
               listMode: _currentMode,
             ),
           ),

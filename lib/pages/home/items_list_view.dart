@@ -13,8 +13,9 @@ class ItemsListView extends StatelessWidget {
   final dateTimeUtils = DateTimeUtils();
 
   ItemsListView({
+    Key key,
     this.listMode = ListMode.all,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ItemsListView extends StatelessWidget {
                   stream: viewModel.items,
                   builder: (context, snapshot) {
                     final items = snapshot.data;
-                    if (items != null) {
+                    if (items != null && items.length > 0) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate((context, index) {
                           final item = items[index];
@@ -59,8 +60,14 @@ class ItemsListView extends StatelessWidget {
                         }, childCount: items.length),
                       );
                     }
-                    return SliverToBoxAdapter(
-                      child: SizedBox(),
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "🎉\nYou've finished!",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.display2,
+                        ),
+                      ),
                     );
                   },
                 ),
