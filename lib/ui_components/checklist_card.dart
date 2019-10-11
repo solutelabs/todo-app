@@ -4,12 +4,14 @@ class ChecklistCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isCompleted;
+  final VoidCallback toggleCompletionStatus;
 
   const ChecklistCard({
     Key key,
     @required this.title,
     @required this.subtitle,
-    this.isCompleted = false,
+    @required this.isCompleted,
+    @required this.toggleCompletionStatus,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class ChecklistCard extends StatelessWidget {
             children: <Widget>[
               Checkbox(
                 value: isCompleted,
-                onChanged: (_) => null,
+                onChanged: (_) => toggleCompletionStatus(),
               ),
               Expanded(
                 child: Column(
