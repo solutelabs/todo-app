@@ -1,7 +1,7 @@
 # Checklist-App [![Codemagic build status](https://api.codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/status_badge.svg)](https://codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/latest_build) ![Coverage](https://raw.githubusercontent.com/solutelabs/checklist-app/master/coverage_badge.svg?sanitize=true)
 
 
-A Demo Flutter Project to for Android, iOS, Web, MacOS, and Linux
+A Demo Flutter Project to for Android, iOS, and Web
 
 ## Getting Started
 
