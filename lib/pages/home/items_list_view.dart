@@ -63,7 +63,7 @@ class ItemsListView extends StatelessWidget {
                     return SliverFillRemaining(
                       child: Center(
                         child: Text(
-                          "🎉\nYou've finished!",
+                          'All done ✅',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.display2,
                         ),

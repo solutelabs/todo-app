@@ -79,9 +79,8 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
                   onChanged: (text) => viewModel.description.add(text),
                   style: Theme.of(context).textTheme.title,
                   keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration.collapsed(
-                    hintText: 'Enter task description...',
+                  decoration: InputDecoration(
+                    hintText: 'Enter task',
                     hintStyle: Theme.of(context)
                         .textTheme
                         .title
