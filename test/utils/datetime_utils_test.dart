@@ -73,4 +73,25 @@ void main() {
       expect(startOfTheMonth, equals(expectedEndOfMonth));
     });
   });
+
+  group('Format date', () {
+    test('Passing NULL DateTime should return NULL String', () {
+      final formattedDate = utils.formatDate(null);
+      expect(formattedDate, null);
+    });
+
+    test(
+        'Date should be formatted in dd/MM/yyyy if format is not provided explicitly',
+        () {
+      final dateTime = DateTime(2019, 10, 17);
+      final formattedDate = utils.formatDate(dateTime);
+      expect(formattedDate, equals('17/10/2019'));
+    });
+
+    test('Date should be formatted in provided explicit format', () {
+      final dateTime = DateTime(2019, 10, 17);
+      final formattedDate = utils.formatDate(dateTime, format: 'dd/MM');
+      expect(formattedDate, equals('17/10'));
+    });
+  });
 }

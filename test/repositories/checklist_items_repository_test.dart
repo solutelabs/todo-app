@@ -73,6 +73,17 @@ void main() {
       expect(updatedItem.description, equals("New Desc"));
       verify(mockDao.update(item: updatedItem));
     });
+
+    test('If args is not provided while update, old value should persist',
+        () async {
+      final item = ChecklistItem(id: "1", description: 'data');
+      when(mockDao.getItem("1")).thenAnswer((_) => Future.value(item));
+
+      final updatedItem = await repo.update(id: "1", isCompleted: true);
+
+      expect(updatedItem.description, equals("data"));
+      verify(mockDao.update(item: updatedItem));
+    });
   });
 
   test('Delete item method should call respective dao method', () {
