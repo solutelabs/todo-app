@@ -1,5 +1,6 @@
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
+import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/ui_components/snack_message_widget.dart';
@@ -19,6 +20,7 @@ class SignInPage extends StatelessWidget {
           services: AuthServices(
             dioClient: dioInstance,
           ),
+          localStorage: InMemoryStorage(),
         ),
       ),
       dispose: (_, viewModel) => viewModel.dispose(),
