@@ -28,3 +28,6 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: lib/assets/fonts/OpenSans-Regular.ttf
+
+  assets:
+    - lib/assets/configuration.json
