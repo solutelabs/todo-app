@@ -13,7 +13,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return Provider<SignInViewModel>(
       builder: (context) => SignInViewModel(
         authRepository: AuthRepository(
           services: AuthServices(
@@ -21,6 +21,7 @@ class SignInPage extends StatelessWidget {
           ),
         ),
       ),
+      dispose: (_, viewModel) => viewModel.dispose(),
       child: _Body(),
     );
   }

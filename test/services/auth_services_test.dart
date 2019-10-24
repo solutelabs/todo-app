@@ -9,7 +9,7 @@ class MockDiaClient extends Mock implements Dio {}
 main() {
   final mockDio = MockDiaClient();
   final service = AuthServices(dioClient: mockDio);
-
+  TestWidgetsFlutterBinding.ensureInitialized();
   test('Passing properties should signUp and return id token', () async {
     when(mockDio.post(
       any,
