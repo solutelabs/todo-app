@@ -1,5 +1,6 @@
 import 'package:checklist/constants.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
+import 'package:checklist/utils/index_walker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -36,16 +37,22 @@ class AuthServices {
       debugPrint(response.data['idToken']);
       return response.data['idToken'];
     } on DioError catch (err) {
+      if (err.response == null || err.response.data == null) {
+        rethrow;
+      }
+
       final response = err.response.data;
-      if (response["error"]["message"] == "INVALID_PASSWORD") {
+      if (IndexWalker(response)["error"]["message"].value ==
+          "INVALID_PASSWORD") {
         throw InvalidCredentials();
       }
 
-      if (response["error"]["message"] == "EMAIL_NOT_FOUND") {
+      if (IndexWalker(response)["error"]["message"].value ==
+          "EMAIL_NOT_FOUND") {
         throw UserNotAvailable();
       }
     } catch (e) {
-      debugPrint(e.toString());
+      rethrow;
     }
     return null;
   }

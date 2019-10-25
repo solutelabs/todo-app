@@ -40,6 +40,19 @@ main() {
     expectLater(viewModel.showMessage, emitsInOrder(["Invalid Password!"]));
   });
 
+  test('For other exception, show message should emmit an event', () {
+    when(mockRepo.authenticateAndRetrieveToken(
+            email: anyNamed('email'), password: anyNamed('password')))
+        .thenThrow(Exception());
+
+    final viewModel = createViewModel();
+    viewModel.email.add('milind.mevada@solutelabs.com');
+    viewModel.password.add('pass');
+    viewModel.onTapContinue.add(null);
+
+    expectLater(viewModel.showMessage, emitsInOrder(["Failed to Sign-in!"]));
+  });
+
   test('Passing valid credetials should emmit event for navigate to home', () {
     when(mockRepo.authenticateAndRetrieveToken(
             email: anyNamed('email'), password: anyNamed('password')))

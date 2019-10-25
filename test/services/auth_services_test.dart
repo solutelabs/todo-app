@@ -129,4 +129,25 @@ main() {
       ),
     );
   });
+
+  test("If error doesn't have data, it should rethrow exception", () async {
+    when(mockDio.post(
+      any,
+      data: anyNamed('data'),
+      queryParameters: anyNamed('queryParameters'),
+      options: anyNamed('options'),
+    )).thenThrow(
+      DioError(
+        response: Response(
+          data: null,
+          statusCode: 400,
+        ),
+      ),
+    );
+
+    expectLater(
+      () => service.signIn(email: "email", password: "password"),
+      throwsException,
+    );
+  });
 }

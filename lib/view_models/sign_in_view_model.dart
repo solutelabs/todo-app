@@ -26,12 +26,11 @@ class SignInViewModel {
 
     subscription.add(
       Observable.combineLatest2(
-          email,
-          password,
-          (String email, String password) =>
-              email.isNotEmpty &&
-              isEmailValid(email) &&
-              password.isNotEmpty).listen(isFormValid.add),
+              email,
+              password,
+              (String email, String password) =>
+                  isEmailValid(email) && password.isNotEmpty)
+          .listen(isFormValid.add),
     );
   }
 
@@ -45,6 +44,8 @@ class SignInViewModel {
       navigateToHome.add(null);
     } on InvalidCredentials catch (_) {
       showMessage.add("Invalid Password!");
+    } catch (_) {
+      showMessage.add("Failed to Sign-in!");
     }
     showProgress.add(false);
   }
