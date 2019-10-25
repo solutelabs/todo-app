@@ -1,5 +1,6 @@
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/pages/add_item_page.dart';
+import 'package:checklist/pages/auth/sign_in_page.dart';
 import 'package:checklist/pages/home/home_page.dart';
 import 'package:checklist/pages/items_list_page.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
@@ -16,8 +17,9 @@ class App extends StatelessWidget {
       builder: (_) => ChecklistItemsRepository(ChecklistItemsDAO()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: HomePage.routeName,
+        initialRoute: SignInPage.routeName,
         routes: {
+          SignInPage.routeName: (_) => SignInPage(),
           HomePage.routeName: (_) => HomePage(),
           AddItemPage.routeName: (_) => AddItemPage(),
         },

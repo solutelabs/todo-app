@@ -15,11 +15,6 @@ void main() {
     viewModel = AddItemViewModel(repository: mockRepo);
   });
 
-  test('On tap save should class appropirate method', () async {
-    viewModel.onSaveTap.add(null);
-    isMethodCall('validateAndSave', arguments: null);
-  });
-
   group('Validate And Save', () {
     test('Valid description should call repo method with exact args', () async {
       viewModel.description.add('Test Description');

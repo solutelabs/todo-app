@@ -38,3 +38,4 @@ lib/generated_plugin_registrant.dart
 macos/Flutter/GeneratedPluginRegistrant.swift
 macos/Flutter/ephemeral/Flutter-Generated.xcconfig
 macos/Flutter/ephemeral/flutter_export_environment.sh
+/lib/assets/configuration.json
