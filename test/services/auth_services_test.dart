@@ -58,7 +58,7 @@ main() {
     expectLater(response, equals("ABC"));
   });
 
-  test('Passing wrong credentials should thro InvalidCredentialsException',
+  test('Passing wrong credentials should throw InvalidCredentialsException',
       () async {
     when(mockDio.post(
       any,
