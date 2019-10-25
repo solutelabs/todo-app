@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockDiaClient extends Mock implements Dio {}
+class MockDioClient extends Mock implements Dio {}
 
 main() {
-  final mockDio = MockDiaClient();
+  final mockDio = MockDioClient();
   final service = AuthServices(dioClient: mockDio);
   TestWidgetsFlutterBinding.ensureInitialized();
   test('Passing properties should signUp and return id token', () async {
