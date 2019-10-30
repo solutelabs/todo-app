@@ -48,11 +48,11 @@ class ChecklistItemsRepository {
 
   Future<ChecklistItem> update({
     @required String id,
-    String descritpion,
+    String description,
     DateTime targetDate,
     bool isCompleted,
   }) async {
-    if ((descritpion == null || descritpion.isEmpty) &&
+    if ((description == null || description.isEmpty) &&
         targetDate == null &&
         isCompleted == null) {
       throw InvalidUpdateArgumentsException();
@@ -60,7 +60,7 @@ class ChecklistItemsRepository {
     final item = await _dao.getItem(id);
     final updatedItem = ChecklistItem(
       id: id,
-      description: descritpion ?? item.description,
+      description: description ?? item.description,
       targetDate: targetDate ?? item.targetDate,
       isCompleted: isCompleted ?? item.isCompleted,
     );

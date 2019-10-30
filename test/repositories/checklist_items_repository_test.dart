@@ -60,7 +60,7 @@ void main() {
     test(
         'When args validation failed, InvalidUpdateArgumentsException should thrown',
         () {
-      expectLater(() => repo.update(id: "12", descritpion: null),
+      expectLater(() => repo.update(id: "12", description: null),
           throwsA(predicate((e) => e is InvalidUpdateArgumentsException)));
     });
 
@@ -68,7 +68,7 @@ void main() {
       final item = ChecklistItem(id: "1", description: 'data');
       when(mockDao.getItem("1")).thenAnswer((_) => Future.value(item));
 
-      final updatedItem = await repo.update(id: "1", descritpion: "New Desc");
+      final updatedItem = await repo.update(id: "1", description: "New Desc");
 
       expect(updatedItem.description, equals("New Desc"));
       verify(mockDao.update(item: updatedItem));
