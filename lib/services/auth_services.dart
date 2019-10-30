@@ -9,7 +9,7 @@ class AuthServices {
 
   AuthServices({@required this.dioClient});
 
-  Future<String> signUp({
+  Future<Map<String, dynamic>> signUp({
     @required String email,
     @required String password,
   }) async {
@@ -19,11 +19,10 @@ class AuthServices {
       password: password,
     );
 
-    debugPrint(response.data['idToken']);
-    return response.data['idToken'];
+    return response.data;
   }
 
-  Future<String> signIn({
+  Future<Map<String, dynamic>> signIn({
     @required String email,
     @required String password,
   }) async {
@@ -34,8 +33,7 @@ class AuthServices {
         password: password,
       );
 
-      debugPrint(response.data['idToken']);
-      return response.data['idToken'];
+      return response.data;
     } on DioError catch (err) {
       if (err.response == null || err.response.data == null) {
         rethrow;

@@ -10,7 +10,7 @@ main() {
   final mockDio = MockDioClient();
   final service = AuthServices(dioClient: mockDio);
   TestWidgetsFlutterBinding.ensureInitialized();
-  test('Passing properties should signUp and return id token', () async {
+  test('Passing properties should signUp and return id token & localId', () async {
     when(mockDio.post(
       any,
       data: anyNamed('data'),
@@ -21,6 +21,7 @@ main() {
         Response(
           data: {
             "idToken": "ABC",
+            "localId":"local_id"
           },
           statusCode: 200,
         ),
@@ -30,10 +31,11 @@ main() {
     final response =
         await service.signUp(email: "name@example.con", password: "123");
 
-    expectLater(response, equals("ABC"));
+    expectLater(response['idToken'], equals("ABC"));
+    expectLater(response['localId'], equals("local_id"));
   });
 
-  test('Passing valid credentials should return id token', () async {
+  test('Passing valid credentials should return id token & localId', () async {
     when(mockDio.post(
       any,
       data: anyNamed('data'),
@@ -44,6 +46,7 @@ main() {
         Response(
           data: {
             "idToken": "ABC",
+            "localId":"local_id"
           },
           statusCode: 200,
         ),
@@ -55,7 +58,8 @@ main() {
       password: "123",
     );
 
-    expectLater(response, equals("ABC"));
+    expectLater(response['idToken'], equals("ABC"));
+    expectLater(response['localId'], equals("local_id"));
   });
 
   test('Passing wrong credentials should throw InvalidCredentialsException',

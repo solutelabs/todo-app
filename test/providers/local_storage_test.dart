@@ -7,4 +7,10 @@ main() {
     final token = await InMemoryStorage().getToken();
     expectLater(token, equals('token'));
   });
+
+  test('Should return saved userId, even by new instance', () async {
+    await InMemoryStorage().saveUserId('user_id');
+    final userId = await InMemoryStorage().getUserId();
+    expectLater(userId, equals('user_id'));
+  });
 }

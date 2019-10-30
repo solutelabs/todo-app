@@ -12,23 +12,22 @@ class AuthRepository {
     @required this.localStorage,
   });
 
-  Future<String> authenticateAndRetrieveToken({
+  Future<void> authenticateAndRetrieveToken({
     @required String email,
     @required String password,
   }) async {
     try {
-      final token = await services.signIn(email: email, password: password);
-      await saveToken(token);
-      return token;
+      final data = await services.signIn(email: email, password: password);
+      await saveUserInfo(data);
     } on UserNotAvailable catch (_) {
-      final token = await services.signUp(email: email, password: password);
-      await saveToken(token);
-      return token;
+      final data = await services.signUp(email: email, password: password);
+      await saveUserInfo(data);
     }
   }
 
-  Future<void> saveToken(String token) {
-    return localStorage.saveToken(token);
+  Future<void> saveUserInfo(Map<String, dynamic> data) async {
+    await localStorage.saveToken(data['idToken']);
+    await localStorage.saveUserId(data['localId']);
   }
 
   Future<String> getToken() {
