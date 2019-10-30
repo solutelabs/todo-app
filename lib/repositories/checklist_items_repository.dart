@@ -26,6 +26,11 @@ class ChecklistItemsRepository {
     return dao.getAllItems();
   }
 
+  Future<void> syncItemsFromServer() async {
+    final serverItems = await networkServices.getAllItemsForCurrentUser();
+    serverItems.forEach((item) => dao.insert(item: item));
+  }
+
   Stream<List<ChecklistItem>> getUnscheduledItems() {
     return dao.getUnscheduledItems();
   }
@@ -48,6 +53,7 @@ class ChecklistItemsRepository {
       targetDate: targetDate,
       isCompleted: false,
     );
+    final _ = networkServices.createOrUpdateItem(item);
     return dao.insert(item: item);
   }
 
@@ -69,6 +75,7 @@ class ChecklistItemsRepository {
       targetDate: targetDate ?? item.targetDate,
       isCompleted: isCompleted ?? item.isCompleted,
     );
+    final _ = networkServices.createOrUpdateItem(updatedItem);
     await dao.update(item: updatedItem);
     return updatedItem;
   }

@@ -29,7 +29,7 @@ main() {
         id: '12',
         description: 'TITLE',
       );
-      await service.createOrUpdateCheckListItem(checkListItem);
+      await service.createOrUpdateItem(checkListItem);
       final targetUrl =
           "${APIEndPoints.todoAppBaseUrl}/${await mockAuthRepo.getUserId()}/todos/${checkListItem.id}.json";
 
@@ -48,7 +48,7 @@ main() {
         description: 'TITLE',
       );
       await expectLater(
-        () => service.createOrUpdateCheckListItem(checkListItem),
+        () => service.createOrUpdateItem(checkListItem),
         throwsA(
           predicate((e) => e is ItemNotCreated),
         ),

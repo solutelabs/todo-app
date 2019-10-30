@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -16,7 +18,12 @@ class ChecklistItem extends Equatable {
   });
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [id, description, targetDate, isCompleted];
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
+  }
 
   factory ChecklistItem.fromJson(Map<String, dynamic> json) => ChecklistItem(
         id: json["id"],

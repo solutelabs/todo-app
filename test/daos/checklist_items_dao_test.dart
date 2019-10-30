@@ -173,7 +173,12 @@ void main() {
         final updatedItem =
             ChecklistItem(id: "1", description: "TEST ITEM ONE");
         await dao.update(item: updatedItem);
-        expect(dao.getAllItems(), emits(dummyItems));
+        expect(
+          dao.getAllItems(),
+          emits(
+            predicate((items) => items.length == dummyItems.length),
+          ),
+        );
       },
     );
   });

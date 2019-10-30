@@ -14,7 +14,7 @@ class CheckListNetworkServices {
     @required this.authRepository,
   });
 
-  Future<void> createOrUpdateCheckListItem(ChecklistItem item) async {
+  Future<void> createOrUpdateItem(ChecklistItem item) async {
     try {
       final url =
           "${APIEndPoints.todoAppBaseUrl}/${await authRepository.getUserId()}/todos/${item.id}.json";

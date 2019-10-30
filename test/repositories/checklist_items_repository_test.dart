@@ -40,6 +40,20 @@ void main() {
     verify(mockDao.getAllItems());
   });
 
+  test('Items should be fetched from server and store into local dao',
+      () async {
+    final dummyItem = ChecklistItem(
+      id: "1",
+      description: "desc",
+    );
+    when(networkServices.getAllItemsForCurrentUser()).thenAnswer(
+      (_) => Future.value([dummyItem]),
+    );
+    await repo.syncItemsFromServer();
+    verify(mockDao.insert(item: dummyItem));
+    verify(networkServices.getAllItemsForCurrentUser());
+  });
+
   test('Get unscheduled items method should call respective dao method', () {
     repo.getUnscheduledItems();
     verify(mockDao.getUnscheduledItems());
@@ -61,6 +75,7 @@ void main() {
     final insertedItem = await repo.insert(description: "data");
 
     verify(mockDao.insert(item: anyNamed('item')));
+    verify(networkServices.createOrUpdateItem(any));
     expect(insertedItem.description, equals('data'));
   });
 
@@ -80,6 +95,7 @@ void main() {
 
       expect(updatedItem.description, equals("New Desc"));
       verify(mockDao.update(item: updatedItem));
+      verify(networkServices.createOrUpdateItem(updatedItem));
     });
 
     test('If args is not provided while update, old value should persist',
@@ -91,6 +107,7 @@ void main() {
 
       expect(updatedItem.description, equals("data"));
       verify(mockDao.update(item: updatedItem));
+      verify(networkServices.createOrUpdateItem(updatedItem));
     });
   });
 
