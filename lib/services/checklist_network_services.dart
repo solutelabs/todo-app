@@ -5,11 +5,11 @@ import 'package:checklist/repositories/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-class ToDoNetworkServices {
+class CheckListNetworkServices {
   final Dio dioClient;
   final AuthRepository authRepository;
 
-  ToDoNetworkServices({
+  CheckListNetworkServices({
     @required this.dioClient,
     @required this.authRepository,
   });

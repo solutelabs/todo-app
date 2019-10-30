@@ -14,7 +14,7 @@ class MockAuthRepo extends Mock implements AuthRepository {}
 main() {
   final mockDio = MockDioClient();
   final mockAuthRepo = MockAuthRepo();
-  final service = ToDoNetworkServices(
+  final service = CheckListNetworkServices(
     dioClient: mockDio,
     authRepository: mockAuthRepo,
   );
