@@ -1,35 +1,40 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
+import 'package:checklist/services/checklist_network_services.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 class ChecklistItemsRepository {
-  final ChecklistItemsDAO _dao;
+  final ChecklistItemsDAO dao;
+  final CheckListNetworkServices networkServices;
 
-  ChecklistItemsRepository(this._dao);
+  ChecklistItemsRepository({
+    @required this.dao,
+    @required this.networkServices,
+  });
 
   void dispose() {
-    _dao.dispose();
+    dao.dispose();
   }
 
   Future<ChecklistItem> getItem(String id) {
-    return _dao.getItem(id);
+    return dao.getItem(id);
   }
 
   Stream<List<ChecklistItem>> getAllItems() {
-    return _dao.getAllItems();
+    return dao.getAllItems();
   }
 
   Stream<List<ChecklistItem>> getUnscheduledItems() {
-    return _dao.getUnscheduledItems();
+    return dao.getUnscheduledItems();
   }
 
   Stream<List<ChecklistItem>> getItemsInDateRange({
     @required DateTime startDate,
     @required DateTime endDate,
   }) {
-    return _dao.getItemsInDateRange(startDate: startDate, endDate: endDate);
+    return dao.getItemsInDateRange(startDate: startDate, endDate: endDate);
   }
 
   Future<ChecklistItem> insert({
@@ -43,7 +48,7 @@ class ChecklistItemsRepository {
       targetDate: targetDate,
       isCompleted: false,
     );
-    return _dao.insert(item: item);
+    return dao.insert(item: item);
   }
 
   Future<ChecklistItem> update({
@@ -57,18 +62,18 @@ class ChecklistItemsRepository {
         isCompleted == null) {
       throw InvalidUpdateArgumentsException();
     }
-    final item = await _dao.getItem(id);
+    final item = await dao.getItem(id);
     final updatedItem = ChecklistItem(
       id: id,
       description: description ?? item.description,
       targetDate: targetDate ?? item.targetDate,
       isCompleted: isCompleted ?? item.isCompleted,
     );
-    await _dao.update(item: updatedItem);
+    await dao.update(item: updatedItem);
     return updatedItem;
   }
 
   Future<void> delete({@required String id}) {
-    return _dao.delete(id: id);
+    return dao.delete(id: id);
   }
 }
