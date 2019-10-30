@@ -100,4 +100,11 @@ void main() {
     expect(token, 'token');
     verify(mockStorage.getToken());
   });
+
+  test('Retrive userId', () async {
+    when(mockStorage.getUserId()).thenAnswer((_) => Future.value('user'));
+    final userId = await repo.getUserId();
+    expect(userId, 'user');
+    verify(mockStorage.getUserId());
+  });
 }

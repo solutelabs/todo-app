@@ -11,3 +11,5 @@ class ItemAlreadyExist implements Exception {}
 class InvalidCredentials implements Exception {}
 
 class UserNotAvailable implements Exception {}
+
+class ItemNotCreated implements Exception {}

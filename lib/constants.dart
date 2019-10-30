@@ -10,6 +10,8 @@ class APIEndPoints {
 
   static const signInUrl =
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword';
+
+  static const todoAppBaseUrl = 'https://todoapp-a89de.firebaseio.com';
 }
 
 Future<String> firebaseAPIKey() async {

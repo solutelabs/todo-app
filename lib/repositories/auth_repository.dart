@@ -33,4 +33,8 @@ class AuthRepository {
   Future<String> getToken() {
     return localStorage.getToken();
   }
+
+  Future<String> getUserId() {
+    return localStorage.getUserId();
+  }
 }
