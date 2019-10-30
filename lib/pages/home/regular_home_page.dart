@@ -39,6 +39,7 @@ class _RegularHomePageState extends State<RegularHomePage> {
                       onModeSelected: (mode) async {
                         setState(() {
                           _currentMode = mode;
+                          selectedItemId = null;
                           debugPrint(_currentMode.toString());
                         });
                       },
@@ -58,7 +59,9 @@ class _RegularHomePageState extends State<RegularHomePage> {
                     Container(
                       width: detailsPageMaxWidth,
                       child: ItemDetailsView(
+                        key: Key(selectedItemId),
                         id: selectedItemId,
+                        onClose: resetSelectedItem,
                       ),
                     ),
                 ],
@@ -73,16 +76,19 @@ class _RegularHomePageState extends State<RegularHomePage> {
                       Expanded(
                         child: Container(
                           child: GestureDetector(
-                            onTap: () => setState(() => selectedItemId = null),
+                            onTap: resetSelectedItem,
                           ),
                         ),
                       ),
                       Container(
                         width: detailsPageMaxWidth,
                         child: ItemDetailsView(
+                          key: Key(selectedItemId),
                           id: selectedItemId,
+                          onClose: resetSelectedItem,
                         ),
                         decoration: BoxDecoration(
+                          color: Colors.white,
                           boxShadow: kElevationToShadow[8],
                         ),
                       ),
@@ -116,5 +122,9 @@ class _RegularHomePageState extends State<RegularHomePage> {
 
   bool shouldShowDetailsViewAsAnOverlay(double widht) {
     return widht < dashboardWidth + listMinWidth + detailsPageMaxWidth;
+  }
+
+  void resetSelectedItem() {
+    setState(() => selectedItemId = null);
   }
 }
