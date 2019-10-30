@@ -50,7 +50,7 @@ void main() {
     when(mockDao.insert(item: anyNamed('item')))
         .thenAnswer((_) => Future.value(item));
 
-    final insertedItem = await repo.insert(descritpion: "data");
+    final insertedItem = await repo.insert(description: "data");
 
     verify(mockDao.insert(item: anyNamed('item')));
     expect(insertedItem.description, equals('data'));

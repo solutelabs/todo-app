@@ -19,7 +19,7 @@ void main() {
     test('Valid description should call repo method with exact args', () async {
       viewModel.description.add('Test Description');
       await viewModel.validateAndSave();
-      verify(mockRepo.insert(descritpion: 'Test Description'));
+      verify(mockRepo.insert(description: 'Test Description'));
     });
 
     test(

@@ -55,7 +55,7 @@ class AddItemViewModel {
       return;
     }
     await repository.insert(
-      descritpion: description.value,
+      description: description.value,
       targetDate: targetDate.value,
     );
     onItemSaved.add(null);

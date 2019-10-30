@@ -33,13 +33,13 @@ class ChecklistItemsRepository {
   }
 
   Future<ChecklistItem> insert({
-    @required String descritpion,
+    @required String description,
     DateTime targetDate,
   }) async {
     final id = Uuid().v1();
     final item = ChecklistItem(
       id: id,
-      description: descritpion,
+      description: description,
       targetDate: targetDate,
       isCompleted: false,
     );
