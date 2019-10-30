@@ -7,6 +7,8 @@ class ItemDetailsView extends StatelessWidget {
   final String id;
   final VoidCallback onClose;
 
+  bool get isFullScreen => onClose == null;
+
   const ItemDetailsView({
     Key key,
     @required this.id,
@@ -16,7 +18,7 @@ class ItemDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
+      color: isFullScreen ? null : Colors.black12,
       child: Provider<ItemDetailsViewModel>(
         builder: (_) => ItemDetailsViewModel(
           itemId: id,

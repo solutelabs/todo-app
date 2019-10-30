@@ -69,7 +69,7 @@ class _RegularHomePageState extends State<RegularHomePage> {
               if (selectedItemId != null &&
                   shouldShowDetailsViewAsAnOverlay(constraints.maxWidth))
                 Container(
-                  color: Colors.black.withAlpha(90),
+                  color: Colors.black38,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
