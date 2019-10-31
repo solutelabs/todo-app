@@ -107,4 +107,9 @@ void main() {
     expect(userId, 'user');
     verify(mockStorage.getUserId());
   });
+
+  test('Should clear data from local storage when Logount', () async {
+    await repo.logout();
+    verify(mockStorage.clearData());
+  });
 }
