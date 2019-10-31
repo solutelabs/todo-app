@@ -12,6 +12,8 @@ main() {
   SignInViewModel createViewModel() =>
       SignInViewModel(authRepository: mockRepo);
 
+  when(mockRepo.getToken()).thenAnswer((_) => Future.value('token'));
+
   test('Valid email and non empty password should emmit true to isFormValid',
       () {
     final viewModel = createViewModel();
