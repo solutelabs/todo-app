@@ -4,7 +4,7 @@ import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/ui_components/snack_message_widget.dart';
-import 'package:checklist/utils/network_utils.dart';
+import 'package:checklist/utils/io_utils.dart';
 import 'package:checklist/view_models/sign_in_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,9 @@ class SignInPage extends StatelessWidget {
           services: AuthServices(
             dioClient: dioInstance,
           ),
-          localStorage: FileBasedStorage(),
+          localStorage: FileBasedStorage(
+            fileStorage: localStorage,
+          ),
         ),
       ),
       dispose: (_, viewModel) => viewModel.dispose(),

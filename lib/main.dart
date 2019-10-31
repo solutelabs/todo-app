@@ -10,7 +10,7 @@ import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/services/checklist_network_services.dart';
-import 'package:checklist/utils/network_utils.dart';
+import 'package:checklist/utils/io_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,9 @@ class App extends StatelessWidget {
             services: AuthServices(
               dioClient: dioInstance,
             ),
-            localStorage: FileBasedStorage(),
+            localStorage: FileBasedStorage(
+              fileStorage: localStorage,
+            ),
           ),
         ),
       ),

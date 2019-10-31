@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:localstorage/localstorage.dart' as file_storage;
 
 abstract class LocalStorage {
@@ -56,7 +57,9 @@ class InMemoryStorage extends LocalStorage {
 }
 
 class FileBasedStorage extends LocalStorage {
-  final fileStorage = file_storage.LocalStorage('session_data');
+  final file_storage.LocalStorage fileStorage;
+
+  FileBasedStorage({@required this.fileStorage});
 
   Future<void> _init() async {
     await fileStorage.ready;
