@@ -11,7 +11,9 @@ void main() {
           title: 'T',
           subtitle: 'ST',
           isCompleted: false,
-          toggleCompletionStatus: () {},
+          toggleCompletionStatus: () {
+            print('Call');
+          },
         ),
         textDirection: TextDirection.ltr,
       ),
@@ -22,5 +24,8 @@ void main() {
 
     expect(titleFinder, findsOneWidget);
     expect(subTitleFinder, findsOneWidget);
+
+    expectLater(
+        () => tester.tap(find.byKey(Key('StatusCheckBox'))), prints('Call\n'));
   });
 }
