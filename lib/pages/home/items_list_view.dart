@@ -11,10 +11,12 @@ import 'package:provider/provider.dart';
 class ItemsListView extends StatelessWidget {
   final ListMode listMode;
   final dateTimeUtils = DateTimeUtils();
+  final void Function(String) onItemSelected;
 
   ItemsListView({
     Key key,
     this.listMode = ListMode.all,
+    @required this.onItemSelected,
   }) : super(key: key);
 
   @override
@@ -50,12 +52,15 @@ class ItemsListView extends StatelessWidget {
                           final subtitle = item.targetDate != null
                               ? dateTimeUtils.formatDate(item.targetDate)
                               : '';
-                          return ChecklistCard(
-                            title: item.description,
-                            subtitle: subtitle,
-                            isCompleted: item.isCompleted,
-                            toggleCompletionStatus: () =>
-                                viewModel.toggleCompletionStatus.add(item),
+                          return GestureDetector(
+                            child: ChecklistCard(
+                              title: item.description,
+                              subtitle: subtitle,
+                              isCompleted: item.isCompleted,
+                              toggleCompletionStatus: () =>
+                                  viewModel.toggleCompletionStatus.add(item),
+                            ),
+                            onTap: () => onItemSelected(item.id),
                           );
                         }, childCount: items.length),
                       );

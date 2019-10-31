@@ -1,10 +1,8 @@
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/view_models/add_item_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockCheckListItemsRepository extends Mock
-    implements ChecklistItemsRepository {}
+import '../repositories/mocks/mock_check_list_items_repository.dart';
 
 void main() {
   AddItemViewModel viewModel;

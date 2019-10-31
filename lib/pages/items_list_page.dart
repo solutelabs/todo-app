@@ -1,5 +1,6 @@
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/pages/home/items_list_view.dart';
+import 'package:checklist/pages/item_details/item_details_page.dart';
 import 'package:flutter/material.dart';
 
 class ItemsListPage extends StatelessWidget {
@@ -20,6 +21,10 @@ class ItemsListPage extends StatelessWidget {
       ),
       body: ItemsListView(
         listMode: listMode,
+        onItemSelected: (id) => Navigator.of(context).pushNamed(
+          ItemDetailsPage.routeName,
+          arguments: id,
+        ),
       ),
     );
   }
