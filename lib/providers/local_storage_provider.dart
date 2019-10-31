@@ -1,3 +1,5 @@
+import 'package:localstorage/localstorage.dart' as file_storage;
+
 abstract class LocalStorage {
   final kTokenKey = 'token';
   final kUserIdKey = 'user_id';
@@ -9,6 +11,8 @@ abstract class LocalStorage {
   Future<void> saveUserId(String userId);
 
   Future<String> getUserId();
+
+  Future<void> clearData();
 }
 
 class InMemoryStorage extends LocalStorage {
@@ -42,5 +46,48 @@ class InMemoryStorage extends LocalStorage {
   Future<void> saveUserId(String userId) {
     storage[kUserIdKey] = userId;
     return null;
+  }
+
+  @override
+  Future<void> clearData() {
+    storage.clear();
+    return null;
+  }
+}
+
+class FileBasedStorage extends LocalStorage {
+  final fileStorage = file_storage.LocalStorage('session_data');
+
+  Future<void> _init() async {
+    await fileStorage.ready;
+  }
+
+  @override
+  Future<String> getToken() async {
+    await _init();
+    return fileStorage.getItem(kTokenKey);
+  }
+
+  @override
+  Future<String> getUserId() async {
+    await _init();
+    return fileStorage.getItem(kUserIdKey);
+  }
+
+  @override
+  Future<void> saveToken(String token) async {
+    await _init();
+    return fileStorage.setItem(kTokenKey, token);
+  }
+
+  @override
+  Future<void> saveUserId(String userId) async {
+    await _init();
+    return fileStorage.setItem(kUserIdKey, userId);
+  }
+
+  @override
+  Future<void> clearData() {
+    return fileStorage.clear();
   }
 }

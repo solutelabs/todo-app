@@ -37,4 +37,8 @@ class AuthRepository {
   Future<String> getUserId() {
     return localStorage.getUserId();
   }
+
+  Future<void> logout() {
+    return localStorage.clearData();
+  }
 }

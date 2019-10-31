@@ -20,7 +20,7 @@ class SignInPage extends StatelessWidget {
           services: AuthServices(
             dioClient: dioInstance,
           ),
-          localStorage: InMemoryStorage(),
+          localStorage: FileBasedStorage(),
         ),
       ),
       dispose: (_, viewModel) => viewModel.dispose(),

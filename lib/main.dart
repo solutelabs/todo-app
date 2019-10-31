@@ -28,7 +28,7 @@ class App extends StatelessWidget {
             services: AuthServices(
               dioClient: dioInstance,
             ),
-            localStorage: InMemoryStorage(),
+            localStorage: FileBasedStorage(),
           ),
         ),
       ),

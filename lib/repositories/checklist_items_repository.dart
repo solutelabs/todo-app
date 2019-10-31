@@ -28,7 +28,11 @@ class ChecklistItemsRepository {
 
   Future<void> syncItemsFromServer() async {
     final serverItems = await networkServices.getAllItemsForCurrentUser();
-    serverItems.forEach((item) => dao.insert(item: item));
+    serverItems.forEach((item) async {
+      try {
+        await dao.insert(item: item);
+      } catch (_) {}
+    });
   }
 
   Stream<List<ChecklistItem>> getUnscheduledItems() {
