@@ -116,4 +116,9 @@ void main() {
     verify(mockDao.delete(id: "id"));
     verify(networkServices.deleteItem("id"));
   });
+
+  test('Dispose should delegate to dao level', () {
+    repo.dispose();
+    verify(mockDao.dispose());
+  });
 }
