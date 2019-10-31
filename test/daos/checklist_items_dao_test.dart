@@ -191,6 +191,17 @@ void main() {
       expect(dao.getAllItems(), emits([...unScheduled, ...scheduled]));
     });
   });
+
+  test('After dispose we should not be able to insert new items', () async {
+    final dao = ChecklistItemsDAO();
+    dao.dispose();
+    expectLater(
+      () => dao.insert(item: ChecklistItem(id: "12", description: "desc")),
+      throwsA(
+        predicate((e) => e is StateError),
+      ),
+    );
+  });
 }
 
 final dummyItems = [
