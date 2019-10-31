@@ -81,6 +81,7 @@ class ChecklistItemsRepository {
   }
 
   Future<void> delete({@required String id}) {
+    final _ = networkServices.deleteItem(id);
     return dao.delete(id: id);
   }
 }

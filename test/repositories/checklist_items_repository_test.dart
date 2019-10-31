@@ -114,5 +114,6 @@ void main() {
   test('Delete item method should call respective dao method', () {
     repo.delete(id: "id");
     verify(mockDao.delete(id: "id"));
+    verify(networkServices.deleteItem("id"));
   });
 }

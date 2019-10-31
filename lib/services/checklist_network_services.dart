@@ -39,4 +39,12 @@ class CheckListNetworkServices {
       return [];
     }
   }
+
+  Future<void> deleteItem(String itemId) async {
+    try {
+      final url =
+          "${APIEndPoints.todoAppBaseUrl}/${await authRepository.getUserId()}/todos/$itemId.json";
+      await dioClient.delete(url);
+    } catch (_) {}
+  }
 }

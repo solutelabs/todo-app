@@ -100,4 +100,15 @@ main() {
     final list = await service.getAllItemsForCurrentUser();
     expect(list.length, 0);
   });
+
+  test('Delete request should made on proper URL', () async {
+    final checkListItem = ChecklistItem(
+      id: '12',
+      description: 'TITLE',
+    );
+    await service.deleteItem(checkListItem.id);
+    final targetUrl =
+        "${APIEndPoints.todoAppBaseUrl}/${await mockAuthRepo.getUserId()}/todos/${checkListItem.id}.json";
+    verify(mockDio.delete(targetUrl));
+  });
 }
