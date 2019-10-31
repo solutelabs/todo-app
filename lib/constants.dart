@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class APIEndPoints {
-  APIEndPoints._();
-
   static const signUpUrl =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp';
 
