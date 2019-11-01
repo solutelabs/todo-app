@@ -2,16 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:localstorage/localstorage.dart' as file_storage;
 
 abstract class LocalStorage {
-  final kTokenKey = 'token';
-  final kUserIdKey = 'user_id';
+  Future<void> set<T>(String key, T data);
 
-  Future<void> saveToken(String token);
-
-  Future<String> getToken();
-
-  Future<void> saveUserId(String userId);
-
-  Future<String> getUserId();
+  Future<T> get<T>(String key);
 
   Future<void> clearData();
 }
@@ -28,24 +21,13 @@ class InMemoryStorage extends LocalStorage {
   final Map<String, dynamic> storage = {};
 
   @override
-  Future<String> getToken() {
-    return Future.value(storage[kTokenKey]);
+  Future<T> get<T>(String key) {
+    return Future.value(storage[key]);
   }
 
   @override
-  Future<void> saveToken(String token) {
-    storage[kTokenKey] = token;
-    return null;
-  }
-
-  @override
-  Future<String> getUserId() {
-    return Future.value(storage[kUserIdKey]);
-  }
-
-  @override
-  Future<void> saveUserId(String userId) {
-    storage[kUserIdKey] = userId;
+  Future<void> set<T>(String key, T data) {
+    storage[key] = data;
     return null;
   }
 
@@ -66,27 +48,15 @@ class FileBasedStorage extends LocalStorage {
   }
 
   @override
-  Future<String> getToken() async {
+  Future<T> get<T>(String key) async {
     await _init();
-    return fileStorage.getItem(kTokenKey);
+    return fileStorage.getItem(key);
   }
 
   @override
-  Future<String> getUserId() async {
+  Future<void> set<T>(String key, T data) async {
     await _init();
-    return fileStorage.getItem(kUserIdKey);
-  }
-
-  @override
-  Future<void> saveToken(String token) async {
-    await _init();
-    return fileStorage.setItem(kTokenKey, token);
-  }
-
-  @override
-  Future<void> saveUserId(String userId) async {
-    await _init();
-    return fileStorage.setItem(kUserIdKey, userId);
+    return fileStorage.setItem(key, data);
   }
 
   @override

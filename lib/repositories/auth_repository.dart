@@ -4,6 +4,9 @@ import 'package:checklist/services/auth_services.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthRepository {
+  final kTokenKey = 'token';
+  final kUserIdKey = 'user_id';
+
   final AuthServices services;
   final LocalStorage localStorage;
 
@@ -26,16 +29,16 @@ class AuthRepository {
   }
 
   Future<void> saveUserInfo(Map<String, dynamic> data) async {
-    await localStorage.saveToken(data['idToken']);
-    await localStorage.saveUserId(data['localId']);
+    await localStorage.set<String>(kTokenKey, data['idToken']);
+    await localStorage.set<String>(kUserIdKey, data['localId']);
   }
 
   Future<String> getToken() {
-    return localStorage.getToken();
+    return localStorage.get<String>(kTokenKey);
   }
 
   Future<String> getUserId() {
-    return localStorage.getUserId();
+    return localStorage.get<String>(kUserIdKey);
   }
 
   Future<void> logout() {

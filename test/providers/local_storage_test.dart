@@ -6,22 +6,18 @@ import 'package:mockito/mockito.dart';
 class MockFileStorage extends Mock implements file_storage.LocalStorage {}
 
 main() {
-  group('In Memory storage', () {
-    test('Should return saved token, even by new instance', () async {
-      await InMemoryStorage().saveToken('token');
-      final token = await InMemoryStorage().getToken();
-      expectLater(token, equals('token'));
-    });
+  final tokenKey = 'token_key';
 
-    test('Should return saved userId, even by new instance', () async {
-      await InMemoryStorage().saveUserId('user_id');
-      final userId = await InMemoryStorage().getUserId();
-      expectLater(userId, equals('user_id'));
+  group('In Memory storage', () {
+    test('Should save and return value properly', () async {
+      await InMemoryStorage().set(tokenKey, 'token');
+      final token = await InMemoryStorage().get(tokenKey);
+      expectLater(token, equals('token'));
     });
 
     test('Should return NULL after clear', () async {
       await InMemoryStorage().clearData();
-      final token = await InMemoryStorage().getToken();
+      final token = await InMemoryStorage().get(tokenKey);
       expectLater(token, isNull);
     });
   });
@@ -37,26 +33,14 @@ main() {
       );
     });
 
-    test('Save token should save to LocalStorage with proper Key and Value',
-        () async {
-      await storage.saveToken('token');
-      verify(mockFileStorage.setItem('token', 'token'));
+    test('Set method should call set in storage with proper key', () async {
+      await storage.set(tokenKey, 'token');
+      verify(mockFileStorage.setItem(tokenKey, 'token'));
     });
 
-    test('Save userId should save to LocalStorage with proper Key and Value',
-        () async {
-      await storage.saveUserId('id');
-      verify(mockFileStorage.setItem('user_id', 'id'));
-    });
-
-    test('Get userId should get from LocalStorage with proper Key', () async {
-      await storage.getUserId();
-      verify(mockFileStorage.getItem('user_id'));
-    });
-
-    test('Get token should get from LocalStorage with proper Key', () async {
-      await storage.getToken();
-      verify(mockFileStorage.getItem('token'));
+    test('Get method should call get in storage with proper key', () async {
+      await storage.get(tokenKey);
+      verify(mockFileStorage.getItem(tokenKey));
     });
 
     test('Should clear from LocalStorage when clearData()', () async {

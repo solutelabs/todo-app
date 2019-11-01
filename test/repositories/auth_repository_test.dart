@@ -10,6 +10,9 @@ class MockAuthService extends Mock implements AuthServices {}
 class MockLocalStorage extends Mock implements LocalStorage {}
 
 void main() {
+  final kTokenKey = 'token';
+  final kUserIdKey = 'user_id';
+
   final mockService = MockAuthService();
   final mockStorage = MockLocalStorage();
   final repo = AuthRepository(services: mockService, localStorage: mockStorage);
@@ -30,8 +33,8 @@ void main() {
     );
 
     verify(mockService.signIn(email: 'email', password: 'password'));
-    verify(mockStorage.saveToken('token'));
-    verify(mockStorage.saveUserId('id'));
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
     verifyNoMoreInteractions(mockService);
   });
 
@@ -83,29 +86,29 @@ void main() {
 
     verify(mockService.signIn(email: 'email', password: 'password'));
     verify(mockService.signUp(email: 'email', password: 'password'));
-    verify(mockStorage.saveToken('token'));
-    verify(mockStorage.saveUserId('id'));
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
     verifyNoMoreInteractions(mockService);
   });
 
   test('Save Data', () async {
     await repo.saveUserInfo({'idToken': 'token', 'localId': 'id'});
-    verify(mockStorage.saveToken('token'));
-    verify(mockStorage.saveUserId('id'));
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
   });
 
   test('Retrive token', () async {
-    when(mockStorage.getToken()).thenAnswer((_) => Future.value('token'));
+    when(mockStorage.get<String>(kTokenKey)).thenAnswer((_) => Future.value('token'));
     final token = await repo.getToken();
-    expect(token, 'token');
-    verify(mockStorage.getToken());
+    expect(token, equals('token'));
+    verify(mockStorage.get(kTokenKey));
   });
 
   test('Retrive userId', () async {
-    when(mockStorage.getUserId()).thenAnswer((_) => Future.value('user'));
+    when(mockStorage.get<String>(kUserIdKey)).thenAnswer((_) => Future.value('user'));
     final userId = await repo.getUserId();
     expect(userId, 'user');
-    verify(mockStorage.getUserId());
+    verify(mockStorage.get(kUserIdKey));
   });
 
   test('Should clear data from local storage when Logount', () async {
