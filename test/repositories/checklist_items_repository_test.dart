@@ -1,6 +1,7 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
+import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/checklist_network_services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,18 +11,25 @@ class MockDao extends Mock implements ChecklistItemsDAO {}
 
 class MockNetworkService extends Mock implements CheckListNetworkServices {}
 
+class MockAuthRepository extends Mock implements AuthRepository {}
+
 void main() {
   ChecklistItemsRepository repo;
   CheckListNetworkServices networkServices;
   MockDao mockDao;
+  MockAuthRepository mockAuthRepository;
 
   setUpAll(() {
     mockDao = MockDao();
     networkServices = MockNetworkService();
+    mockAuthRepository = MockAuthRepository();
     repo = ChecklistItemsRepository(
       dao: mockDao,
       networkServices: networkServices,
+      authRepository: mockAuthRepository,
     );
+    when(mockAuthRepository.getUserId())
+        .thenAnswer((_) => Future.value('user_id_123'));
   });
 
   tearDownAll(() {
@@ -46,12 +54,14 @@ void main() {
       id: "1",
       description: "desc",
     );
-    when(networkServices.getAllItemsForCurrentUser()).thenAnswer(
+    final userId = await mockAuthRepository.getUserId();
+    when(networkServices.getAllItemsForUser(userId)).thenAnswer(
       (_) => Future.value([dummyItem]),
     );
     await repo.syncItemsFromServer();
     verify(mockDao.insert(item: dummyItem));
-    verify(networkServices.getAllItemsForCurrentUser());
+
+    verify(networkServices.getAllItemsForUser(userId));
   });
 
   test('Get unscheduled items method should call respective dao method', () {
@@ -75,7 +85,12 @@ void main() {
     final insertedItem = await repo.insert(description: "data");
 
     verify(mockDao.insert(item: anyNamed('item')));
-    verify(networkServices.createOrUpdateItem(any));
+    verify(
+      networkServices.createOrUpdateItem(
+        item: anyNamed('item'),
+        userId: anyNamed('userId'),
+      ),
+    );
     expect(insertedItem.description, equals('data'));
   });
 
@@ -95,7 +110,11 @@ void main() {
 
       expect(updatedItem.description, equals("New Desc"));
       verify(mockDao.update(item: updatedItem));
-      verify(networkServices.createOrUpdateItem(updatedItem));
+      final userId = await mockAuthRepository.getUserId();
+      verify(networkServices.createOrUpdateItem(
+        item: updatedItem,
+        userId: userId,
+      ));
     });
 
     test('If args is not provided while update, old value should persist',
@@ -107,14 +126,22 @@ void main() {
 
       expect(updatedItem.description, equals("data"));
       verify(mockDao.update(item: updatedItem));
-      verify(networkServices.createOrUpdateItem(updatedItem));
+      final userId = await mockAuthRepository.getUserId();
+      verify(networkServices.createOrUpdateItem(
+        item: updatedItem,
+        userId: userId,
+      ));
     });
   });
 
-  test('Delete item method should call respective dao method', () {
-    repo.delete(id: "id");
+  test('Delete item method should call respective dao method', () async {
+    await repo.delete(id: "id");
     verify(mockDao.delete(id: "id"));
-    verify(networkServices.deleteItem("id"));
+    final userId = await mockAuthRepository.getUserId();
+    verify(networkServices.deleteItem(
+      itemId: "id",
+      userId: userId,
+    ));
   });
 
   test('Dispose should delegate to dao level', () {

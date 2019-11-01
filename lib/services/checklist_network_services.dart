@@ -1,23 +1,23 @@
 import 'package:checklist/constants.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
-import 'package:checklist/repositories/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class CheckListNetworkServices {
   final Dio dioClient;
-  final AuthRepository authRepository;
 
   CheckListNetworkServices({
     @required this.dioClient,
-    @required this.authRepository,
   });
 
-  Future<void> createOrUpdateItem(ChecklistItem item) async {
+  Future<void> createOrUpdateItem({
+    @required ChecklistItem item,
+    @required String userId,
+  }) async {
     try {
       final url =
-          "${APIEndPoints.todoAppBaseUrl}/${await authRepository.getUserId()}/todos/${item.id}.json";
+          "${APIEndPoints.todoAppBaseUrl}/$userId/todos/${item.id}.json";
       await dioClient.patch(
         url,
         data: item.toJson(),
@@ -27,10 +27,10 @@ class CheckListNetworkServices {
     }
   }
 
-  Future<List<ChecklistItem>> getAllItemsForCurrentUser() async {
+  Future<List<ChecklistItem>> getAllItemsForUser(String userId) async {
     try {
       final response = await dioClient.get(
-        "${APIEndPoints.todoAppBaseUrl}/${await authRepository.getUserId()}/todos.json",
+        "${APIEndPoints.todoAppBaseUrl}/$userId/todos.json",
       );
       final list = List<Map<String, dynamic>>();
       response.data.forEach((item, value) => list.add(value));
@@ -40,10 +40,12 @@ class CheckListNetworkServices {
     }
   }
 
-  Future<void> deleteItem(String itemId) async {
+  Future<void> deleteItem({
+    @required String itemId,
+    @required String userId,
+  }) async {
     try {
-      final url =
-          "${APIEndPoints.todoAppBaseUrl}/${await authRepository.getUserId()}/todos/$itemId.json";
+      final url = "${APIEndPoints.todoAppBaseUrl}/$userId/todos/$itemId.json";
       await dioClient.delete(url);
     } catch (_) {}
   }

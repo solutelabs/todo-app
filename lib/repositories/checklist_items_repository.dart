@@ -1,6 +1,7 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
+import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/services/checklist_network_services.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
@@ -8,11 +9,28 @@ import 'package:uuid/uuid.dart';
 class ChecklistItemsRepository {
   final ChecklistItemsDAO dao;
   final CheckListNetworkServices networkServices;
+  final AuthRepository authRepository;
 
-  ChecklistItemsRepository({
+  ChecklistItemsRepository._({
     @required this.dao,
     @required this.networkServices,
+    @required this.authRepository,
   });
+
+  static ChecklistItemsRepository _instance;
+
+  factory ChecklistItemsRepository({
+    @required ChecklistItemsDAO dao,
+    @required CheckListNetworkServices networkServices,
+    @required AuthRepository authRepository,
+  }) {
+    _instance ??= ChecklistItemsRepository._(
+      dao: dao,
+      networkServices: networkServices,
+      authRepository: authRepository,
+    );
+    return _instance;
+  }
 
   void dispose() {
     dao.dispose();
@@ -27,7 +45,8 @@ class ChecklistItemsRepository {
   }
 
   Future<void> syncItemsFromServer() async {
-    final serverItems = await networkServices.getAllItemsForCurrentUser();
+    final userId = await authRepository.getUserId();
+    final serverItems = await networkServices.getAllItemsForUser(userId);
     serverItems.forEach((item) async {
       try {
         await dao.insert(item: item);
@@ -57,7 +76,11 @@ class ChecklistItemsRepository {
       targetDate: targetDate,
       isCompleted: false,
     );
-    final _ = networkServices.createOrUpdateItem(item);
+    final userId = await authRepository.getUserId();
+    final _ = networkServices.createOrUpdateItem(
+      item: item,
+      userId: userId,
+    );
     return dao.insert(item: item);
   }
 
@@ -79,13 +102,21 @@ class ChecklistItemsRepository {
       targetDate: targetDate ?? item.targetDate,
       isCompleted: isCompleted ?? item.isCompleted,
     );
-    final _ = networkServices.createOrUpdateItem(updatedItem);
+    final userId = await authRepository.getUserId();
+    final _ = networkServices.createOrUpdateItem(
+      item: updatedItem,
+      userId: userId,
+    );
     await dao.update(item: updatedItem);
     return updatedItem;
   }
 
-  Future<void> delete({@required String id}) {
-    final _ = networkServices.deleteItem(id);
+  Future<void> delete({@required String id}) async {
+    final userId = await authRepository.getUserId();
+    final _ = networkServices.deleteItem(
+      itemId: id,
+      userId: userId,
+    );
     return dao.delete(id: id);
   }
 }
