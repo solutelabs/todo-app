@@ -3,7 +3,7 @@ import 'package:checklist/view_models/item_details_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../repositories/mocks/mock_check_list_items_repository.dart';
+import '../mock_dependencies.dart';
 
 void main() {
   MockCheckListItemsRepository mockRepo;

@@ -1,17 +1,12 @@
-import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:checklist/models/checklist_item.dart';
-import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/checklist_network_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockDao extends Mock implements ChecklistItemsDAO {}
+import '../mock_dependencies.dart';
 
-class MockNetworkService extends Mock implements CheckListNetworkServices {}
-
-class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
   ChecklistItemsRepository repo;

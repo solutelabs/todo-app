@@ -1,13 +1,12 @@
 import 'package:checklist/exceptions/custom_exceptions.dart';
-import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/view_models/sign_in_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRepo extends Mock implements AuthRepository {}
+import '../mock_dependencies.dart';
 
 main() {
-  final mockRepo = MockRepo();
+  final mockRepo = MockAuthRepository();
 
   SignInViewModel createViewModel() =>
       SignInViewModel(authRepository: mockRepo);

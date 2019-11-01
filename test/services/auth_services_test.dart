@@ -4,13 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockDioClient extends Mock implements Dio {}
+import '../mock_dependencies.dart';
 
 main() {
   final mockDio = MockDioClient();
   final service = AuthServices(dioClient: mockDio);
   TestWidgetsFlutterBinding.ensureInitialized();
-  test('Passing properties should signUp and return id token & localId', () async {
+  test('Passing properties should signUp and return id token & localId',
+      () async {
     when(mockDio.post(
       any,
       data: anyNamed('data'),
@@ -19,10 +20,7 @@ main() {
     )).thenAnswer(
       (_) => Future.value(
         Response(
-          data: {
-            "idToken": "ABC",
-            "localId":"local_id"
-          },
+          data: {"idToken": "ABC", "localId": "local_id"},
           statusCode: 200,
         ),
       ),
@@ -44,10 +42,7 @@ main() {
     )).thenAnswer(
       (_) => Future.value(
         Response(
-          data: {
-            "idToken": "ABC",
-            "localId":"local_id"
-          },
+          data: {"idToken": "ABC", "localId": "local_id"},
           statusCode: 200,
         ),
       ),

@@ -1,16 +1,15 @@
-import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/view_models/account_manage_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthRepo extends Mock implements AuthRepository {}
+import '../mock_dependencies.dart';
 
 main() {
-  MockAuthRepo authRepo;
+  MockAuthRepository authRepo;
   AccountManageViewModel viewModel;
 
   setUp(() {
-    authRepo = MockAuthRepo();
+    authRepo = MockAuthRepository();
     viewModel = AccountManageViewModel(authRepository: authRepo);
   });
 

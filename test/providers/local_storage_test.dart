@@ -1,9 +1,8 @@
 import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:localstorage/localstorage.dart' as file_storage;
 import 'package:mockito/mockito.dart';
 
-class MockFileStorage extends Mock implements file_storage.LocalStorage {}
+import '../mock_dependencies.dart';
 
 main() {
   final tokenKey = 'token_key';

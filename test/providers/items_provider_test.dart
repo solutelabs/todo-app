@@ -1,19 +1,18 @@
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/providers/items_provider.dart';
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/utils/datetime_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRepo extends Mock implements ChecklistItemsRepository {}
+import '../mock_dependencies.dart';
 
 void main() {
   ItemsProvider provider;
-  MockRepo mockRepo;
+  MockCheckListItemsRepository mockRepo;
 
   setUp(() {
-    mockRepo = MockRepo();
+    mockRepo = MockCheckListItemsRepository();
     provider = ItemsProvider(repository: mockRepo);
 
     when(

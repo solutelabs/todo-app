@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockDioClient extends Mock implements Dio {}
+import '../mock_dependencies.dart';
 
 main() {
   final mockDio = MockDioClient();
