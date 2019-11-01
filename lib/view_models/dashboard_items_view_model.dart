@@ -16,6 +16,8 @@ class DashboardItemsViewModel {
   DashboardItemsViewModel({
     @required this.itemsProvider,
   }) {
+    itemsProvider.repository.syncItemsFromServer();
+
     final streams = [
       ListMode.today,
       ListMode.thisWeek,

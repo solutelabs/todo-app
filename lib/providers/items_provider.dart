@@ -25,7 +25,6 @@ class ItemsProvider {
         );
         break;
       case ListMode.all:
-        repository.syncItemsFromServer();
         stream = repository.getAllItems();
         break;
     }
