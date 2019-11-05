@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:checklist/providers/viewmodel_provider.dart';
 import 'package:checklist/ui_components/snack_message_widget.dart';
 import 'package:checklist/utils/datetime_utils.dart';
 import 'package:checklist/view_models/add_item_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
 class AddItemPage extends StatelessWidget {
@@ -12,8 +12,9 @@ class AddItemPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = kiwi.Container();
     return Provider<AddItemViewModel>(
-      builder: (_) => provideAddItemsViewModel(),
+      builder: (_) => c<AddItemViewModel>(),
       dispose: (_, bloc) => bloc.dispose(),
       child: Builder(
         builder: (_) => _AddItemPageBody(),
