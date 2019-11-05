@@ -1,4 +1,4 @@
-import 'package:checklist/di/dependencies.dart';
+import 'package:checklist/di/dependencies.dart' as di;
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/pages/add_item_page.dart';
 import 'package:checklist/pages/auth/sign_in_page.dart';
@@ -8,7 +8,7 @@ import 'package:checklist/pages/items_list_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  setup();
+  di.setup();
   runApp(App());
 }
 

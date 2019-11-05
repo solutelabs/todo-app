@@ -5,7 +5,6 @@ import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/services/checklist_network_services.dart';
-import 'package:checklist/utils/io_utils.dart';
 import 'package:checklist/view_models/account_manage_view_model.dart';
 import 'package:checklist/view_models/add_item_view_model.dart';
 import 'package:checklist/view_models/dashboard_items_view_model.dart';
@@ -43,7 +42,7 @@ void setup() {
       .registerSingleton((c) => file_storage.LocalStorage('session_data'));
 
   Container().registerFactory<LocalStorage, FileBasedStorage>(
-      (c) => FileBasedStorage(fileStorage: localStorage));
+      (c) => FileBasedStorage(fileStorage: c<file_storage.LocalStorage>()));
 
   injector.configure();
 }
