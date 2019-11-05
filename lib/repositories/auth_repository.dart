@@ -4,6 +4,9 @@ import 'package:checklist/services/auth_services.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthRepository {
+  final kTokenKey = 'token';
+  final kUserIdKey = 'user_id';
+
   final AuthServices services;
   final LocalStorage localStorage;
 
@@ -12,26 +15,33 @@ class AuthRepository {
     @required this.localStorage,
   });
 
-  Future<String> authenticateAndRetrieveToken({
+  Future<void> authenticateAndRetrieveToken({
     @required String email,
     @required String password,
   }) async {
     try {
-      final token = await services.signIn(email: email, password: password);
-      await saveToken(token);
-      return token;
+      final data = await services.signIn(email: email, password: password);
+      await saveUserInfo(data);
     } on UserNotAvailable catch (_) {
-      final token = await services.signUp(email: email, password: password);
-      await saveToken(token);
-      return token;
+      final data = await services.signUp(email: email, password: password);
+      await saveUserInfo(data);
     }
   }
 
-  Future<void> saveToken(String token) {
-    return localStorage.saveToken(token);
+  Future<void> saveUserInfo(Map<String, dynamic> data) async {
+    await localStorage.set<String>(kTokenKey, data['idToken']);
+    await localStorage.set<String>(kUserIdKey, data['localId']);
   }
 
   Future<String> getToken() {
-    return localStorage.getToken();
+    return localStorage.get<String>(kTokenKey);
+  }
+
+  Future<String> getUserId() {
+    return localStorage.get<String>(kUserIdKey);
+  }
+
+  Future<void> logout() {
+    return localStorage.clearData();
   }
 }

@@ -3,6 +3,7 @@ import 'package:checklist/pages/add_item_page.dart';
 import 'package:checklist/pages/home/dashboard_view.dart';
 import 'package:checklist/pages/home/items_list_view.dart';
 import 'package:checklist/pages/item_details/item_details_view.dart';
+import 'package:checklist/ui_components/account_manage_widget.dart';
 import 'package:flutter/material.dart';
 
 class RegularHomePage extends StatefulWidget {
@@ -27,6 +28,11 @@ class _RegularHomePageState extends State<RegularHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          AccountManageWidget(),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(

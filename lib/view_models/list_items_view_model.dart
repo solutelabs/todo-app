@@ -18,6 +18,8 @@ class ListItemsViewModel {
     @required this.itemsProvider,
     @required ListMode mode,
   }) {
+    itemsProvider.repository.syncItemsFromServer();
+
     currentMode = BehaviorSubject<ListMode>.seeded(mode);
 
     _subscriptions.add(

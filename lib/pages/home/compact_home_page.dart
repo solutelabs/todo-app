@@ -3,6 +3,7 @@ import 'package:checklist/pages/home/dashboard_view.dart';
 import 'package:checklist/pages/home/items_list_view.dart';
 import 'package:checklist/pages/item_details/item_details_page.dart';
 import 'package:checklist/pages/items_list_page.dart';
+import 'package:checklist/ui_components/account_manage_widget.dart';
 import 'package:checklist/ui_components/fab_bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,9 @@ class _CompactHomePageState extends State<CompactHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(getTitle()),
+        actions: <Widget>[
+          AccountManageWidget(),
+        ],
       ),
       body: getBody(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

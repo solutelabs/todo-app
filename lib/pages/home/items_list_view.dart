@@ -1,11 +1,11 @@
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/providers/items_provider.dart';
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/ui_components/checklist_card.dart';
 import 'package:checklist/utils/datetime_utils.dart';
 import 'package:checklist/view_models/list_items_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
 class ItemsListView extends StatelessWidget {
@@ -21,12 +21,10 @@ class ItemsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final repository = Provider.of<ChecklistItemsRepository>(context);
+    final c = kiwi.Container();
     return Provider<ListItemsViewModel>(
       builder: (context) => ListItemsViewModel(
-        itemsProvider: ItemsProvider(
-          repository: repository,
-        ),
+        itemsProvider: c<ItemsProvider>(),
         mode: listMode,
       ),
       child: Builder(

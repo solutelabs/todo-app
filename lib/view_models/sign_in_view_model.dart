@@ -32,6 +32,12 @@ class SignInViewModel {
                   isEmailValid(email) && password.isNotEmpty)
           .listen(isFormValid.add),
     );
+
+    authRepository.getToken().then((token) {
+      if (token != null) {
+        navigateToHome.add(null);
+      }
+    });
   }
 
   Future<void> signIn() async {

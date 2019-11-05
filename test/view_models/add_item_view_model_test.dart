@@ -2,7 +2,7 @@ import 'package:checklist/view_models/add_item_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../repositories/mocks/mock_check_list_items_repository.dart';
+import '../mock_dependencies.dart';
 
 void main() {
   AddItemViewModel viewModel;
@@ -17,7 +17,7 @@ void main() {
     test('Valid description should call repo method with exact args', () async {
       viewModel.description.add('Test Description');
       await viewModel.validateAndSave();
-      verify(mockRepo.insert(descritpion: 'Test Description'));
+      verify(mockRepo.insert(description: 'Test Description'));
     });
 
     test(

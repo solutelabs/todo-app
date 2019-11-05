@@ -173,7 +173,12 @@ void main() {
         final updatedItem =
             ChecklistItem(id: "1", description: "TEST ITEM ONE");
         await dao.update(item: updatedItem);
-        expect(dao.getAllItems(), emits(dummyItems));
+        expect(
+          dao.getAllItems(),
+          emits(
+            predicate((items) => items.length == dummyItems.length),
+          ),
+        );
       },
     );
   });
@@ -185,6 +190,17 @@ void main() {
       await dao.delete(id: "10");
       expect(dao.getAllItems(), emits([...unScheduled, ...scheduled]));
     });
+  });
+
+  test('After dispose we should not be able to insert new items', () async {
+    final dao = ChecklistItemsDAO();
+    dao.dispose();
+    expectLater(
+      () => dao.insert(item: ChecklistItem(id: "12", description: "desc")),
+      throwsA(
+        predicate((e) => e is StateError),
+      ),
+    );
   });
 }
 

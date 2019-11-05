@@ -1,11 +1,10 @@
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/models/dashboard_item.dart';
 import 'package:checklist/models/list_mode.dart';
-import 'package:checklist/providers/items_provider.dart';
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/ui_components/dashboard_stats_card.dart';
 import 'package:checklist/view_models/dashboard_items_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
 class DashboardView extends StatelessWidget with UITraitsMixin {
@@ -18,14 +17,10 @@ class DashboardView extends StatelessWidget with UITraitsMixin {
 
   @override
   Widget build(BuildContext context) {
+    final c = kiwi.Container();
     final traits = deriveWidthTrait(context);
-    final repository = Provider.of<ChecklistItemsRepository>(context);
     return Provider<DashboardItemsViewModel>(
-      builder: (context) => DashboardItemsViewModel(
-        itemsProvider: ItemsProvider(
-          repository: repository,
-        ),
-      ),
+      builder: (context) => c<DashboardItemsViewModel>(),
       child: Builder(
         builder: (context) {
           final viewModel = Provider.of<DashboardItemsViewModel>(context);

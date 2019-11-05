@@ -1,12 +1,9 @@
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
-import 'package:checklist/providers/local_storage_provider.dart';
-import 'package:checklist/repositories/auth_repository.dart';
-import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/ui_components/snack_message_widget.dart';
-import 'package:checklist/utils/network_utils.dart';
 import 'package:checklist/view_models/sign_in_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
@@ -14,15 +11,9 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = kiwi.Container();
     return Provider<SignInViewModel>(
-      builder: (context) => SignInViewModel(
-        authRepository: AuthRepository(
-          services: AuthServices(
-            dioClient: dioInstance,
-          ),
-          localStorage: InMemoryStorage(),
-        ),
-      ),
+      builder: (context) => c<SignInViewModel>(),
       dispose: (_, viewModel) => viewModel.dispose(),
       child: _Body(),
     );

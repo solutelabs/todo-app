@@ -1,6 +1,7 @@
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/view_models/item_details_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:provider/provider.dart';
 
 class ItemDetailsView extends StatelessWidget {
@@ -17,12 +18,13 @@ class ItemDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = kiwi.Container();
     return Container(
       color: isFullScreen ? null : Colors.black12,
       child: Provider<ItemDetailsViewModel>(
         builder: (_) => ItemDetailsViewModel(
           itemId: id,
-          repository: Provider.of<ChecklistItemsRepository>(context),
+          repository: c<ChecklistItemsRepository>(),
         ),
         dispose: (_, viewModel) => viewModel.dispose(),
         child: Builder(

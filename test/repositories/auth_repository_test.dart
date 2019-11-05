@@ -1,20 +1,21 @@
 import 'package:checklist/exceptions/custom_exceptions.dart';
-import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:checklist/repositories/auth_repository.dart';
-import 'package:checklist/services/auth_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthService extends Mock implements AuthServices {}
+import '../mock_dependencies.dart';
 
-class MockLocalStorage extends Mock implements LocalStorage {}
+
 
 void main() {
+  final kTokenKey = 'token';
+  final kUserIdKey = 'user_id';
+
   final mockService = MockAuthService();
   final mockStorage = MockLocalStorage();
   final repo = AuthRepository(services: mockService, localStorage: mockStorage);
 
-  test('First it should try to signin, if success return token', () async {
+  test('First it should try to signin', () async {
     when(
       mockService.signIn(
         email: anyNamed('email'),
@@ -22,14 +23,16 @@ void main() {
           'password',
         ),
       ),
-    ).thenAnswer((_) => Future.value('token'));
+    ).thenAnswer((_) => Future.value({'idToken': 'token', 'localId': 'id'}));
 
-    final token = await repo.authenticateAndRetrieveToken(
-        email: 'email', password: 'password');
+    await repo.authenticateAndRetrieveToken(
+      email: 'email',
+      password: 'password',
+    );
 
-    expect(token, equals('token'));
     verify(mockService.signIn(email: 'email', password: 'password'));
-    verify(mockStorage.saveToken('token'));
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
     verifyNoMoreInteractions(mockService);
   });
 
@@ -54,8 +57,7 @@ void main() {
     verifyNoMoreInteractions(mockService);
   });
 
-  test(
-      'In case of non existing credentials, it should try to signup and return token',
+  test('In case of non existing credentials, it should try to signup',
       () async {
     when(
       mockService.signIn(
@@ -73,29 +75,42 @@ void main() {
           'password',
         ),
       ),
-    ).thenAnswer((_) => Future.value('token'));
+    ).thenAnswer((_) => Future.value({'idToken': 'token', 'localId': 'id'}));
 
-    final token = await repo.authenticateAndRetrieveToken(
+    await repo.authenticateAndRetrieveToken(
       email: 'email',
       password: 'password',
     );
 
-    expect(token, equals('token'));
     verify(mockService.signIn(email: 'email', password: 'password'));
     verify(mockService.signUp(email: 'email', password: 'password'));
-    verify(mockStorage.saveToken('token'));
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
     verifyNoMoreInteractions(mockService);
   });
 
-  test('Save token', () async {
-    await repo.saveToken('token');
-    verify(mockStorage.saveToken('token'));
+  test('Save Data', () async {
+    await repo.saveUserInfo({'idToken': 'token', 'localId': 'id'});
+    verify(mockStorage.set(kTokenKey, 'token'));
+    verify(mockStorage.set(kUserIdKey, 'id'));
   });
 
   test('Retrive token', () async {
-    when(mockStorage.getToken()).thenAnswer((_) => Future.value('token'));
+    when(mockStorage.get<String>(kTokenKey)).thenAnswer((_) => Future.value('token'));
     final token = await repo.getToken();
-    expect(token, 'token');
-    verify(mockStorage.getToken());
+    expect(token, equals('token'));
+    verify(mockStorage.get(kTokenKey));
+  });
+
+  test('Retrive userId', () async {
+    when(mockStorage.get<String>(kUserIdKey)).thenAnswer((_) => Future.value('user'));
+    final userId = await repo.getUserId();
+    expect(userId, 'user');
+    verify(mockStorage.get(kUserIdKey));
+  });
+
+  test('Should clear data from local storage when Logount', () async {
+    await repo.logout();
+    verify(mockStorage.clearData());
   });
 }

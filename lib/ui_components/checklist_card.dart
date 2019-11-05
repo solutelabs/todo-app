@@ -30,6 +30,7 @@ class ChecklistCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(
+                key: Key('StatusCheckBox'),
                 value: isCompleted,
                 onChanged: (_) => toggleCompletionStatus(),
               ),
@@ -68,3 +69,5 @@ class ChecklistCard extends StatelessWidget {
     );
   }
 }
+
+
