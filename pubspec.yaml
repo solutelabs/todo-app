@@ -16,6 +16,7 @@ dependencies:
   dio: ^3.0.3
   localstorage: ^3.0.0+2
   kiwi: ^0.2.0
+  flutter_bloc: ^2.0.0
 
 
 dev_dependencies:

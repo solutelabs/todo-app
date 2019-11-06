@@ -1,10 +1,10 @@
+import 'package:checklist/bloc/login/bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
-import 'package:checklist/ui_components/snack_message_widget.dart';
-import 'package:checklist/view_models/sign_in_view_model.dart';
+import 'package:checklist/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
-import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   static const routeName = '/';
@@ -12,10 +12,17 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = kiwi.Container();
-    return Provider<SignInViewModel>(
-      builder: (context) => c<SignInViewModel>(),
-      dispose: (_, viewModel) => viewModel.dispose(),
-      child: _Body(),
+    return BlocProvider<LoginBloc>(
+      builder: (context) => LoginBloc(authRepository: c<AuthRepository>())
+        ..add(
+          CheckActiveSession(),
+        ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Sign in'),
+        ),
+        body: _Body(),
+      ),
     );
   }
 }
@@ -33,22 +40,27 @@ class __BodyState extends State<_Body> with UITraitsMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SignInViewModel>(context).navigateToHome.listen((_) {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(HomePage.routeName, (_) => false);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SignInViewModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign in'),
-      ),
-      body: Center(
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (BuildContext context, state) {
+        if (state is LoginLoggedIn) {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(HomePage.routeName, (_) => false);
+        }
+
+        if (state is LoginFailed) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${state.error}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 600),
           child: Padding(
@@ -58,40 +70,33 @@ class __BodyState extends State<_Body> with UITraitsMixin {
               children: <Widget>[
                 TextField(
                   keyboardType: TextInputType.emailAddress,
-                  onChanged: viewModel.email.add,
+                  onChanged: (email) => BlocProvider.of<LoginBloc>(context).add(
+                    EmailEntered(email),
+                  ),
                   decoration: InputDecoration(labelText: 'Email'),
                 ),
                 TextField(
                   obscureText: true,
-                  onChanged: viewModel.password.add,
+                  onChanged: (password) =>
+                      BlocProvider.of<LoginBloc>(context).add(
+                    PasswordEntered(password),
+                  ),
                   decoration: InputDecoration(labelText: 'Password'),
                 ),
-                StreamBuilder<bool>(
-                  stream: viewModel.isFormValid,
-                  initialData: false,
-                  builder: (context, snapshot) {
+                BlocBuilder<LoginBloc, LoginState>(
+                  builder: (BuildContext context, state) {
                     return RaisedButton(
-                      child: StreamBuilder<bool>(
-                        stream: viewModel.showProgress,
-                        initialData: false,
-                        builder: (context, snapshot) {
-                          if (snapshot.data) {
-                            return SizedBox(
+                      onPressed: state == LoginFormInValid()
+                          ? null
+                          : () => BlocProvider.of<LoginBloc>(context)
+                              .add(LoginButtonPressed()),
+                      child: state == LoginLoading()
+                          ? SizedBox(
                               height: 20,
                               width: 20,
                               child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Text('Continue');
-                        },
-                      ),
-                      onPressed: !snapshot.data
-                          ? null
-                          : () {
-                              if (viewModel.showProgress.value == false) {
-                                viewModel.onTapContinue.add(null);
-                              }
-                            },
+                            )
+                          : Text('Continue'),
                     );
                   },
                 ),
@@ -99,7 +104,6 @@ class __BodyState extends State<_Body> with UITraitsMixin {
                   'New User? Enter credentials and we will create an account for you.',
                   textAlign: TextAlign.center,
                 ),
-                SnackMessageWidget(messageStream: viewModel.showMessage),
               ],
             ),
           ),
