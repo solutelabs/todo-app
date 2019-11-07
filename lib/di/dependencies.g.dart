@@ -22,7 +22,5 @@ class _$Injector extends Injector {
     container.registerFactory((c) => ChecklistItemsDAO());
     container.registerFactory(
         (c) => ItemsProvider(repository: c<ChecklistItemsRepository>()));
-    container.registerFactory(
-        (c) => AccountManageViewModel(authRepository: c<AuthRepository>()));
   }
 }
