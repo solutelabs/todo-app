@@ -1,23 +1,35 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/models/dashboard_item.dart';
 import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/providers/items_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DashboardItemsViewModel {
+import './bloc.dart';
+
+class DashboardItemsBloc
+    extends Bloc<DashboardItemsEvent, DashboardItemsState> {
   final ItemsProvider itemsProvider;
 
-  final items = BehaviorSubject<List<DashboardItem>>.seeded([]);
+  DashboardItemsBloc({@required this.itemsProvider});
 
-  final _subscriptions = CompositeSubscription();
+  @override
+  DashboardItemsState get initialState => InitialDashboardItemsState();
 
-  DashboardItemsViewModel({
-    @required this.itemsProvider,
-  }) {
-    itemsProvider.repository.syncItemsFromServer();
+  @override
+  Stream<DashboardItemsState> mapEventToState(
+    DashboardItemsEvent event,
+  ) async* {
+    if (event is FetchDashBoardItems) {
+      itemsProvider.repository.syncItemsFromServer();
+      yield* fetchItems();
+    }
+  }
 
+  Stream<DashboardItemsState> fetchItems() async* {
     final streams = [
       ListMode.today,
       ListMode.thisWeek,
@@ -31,17 +43,8 @@ class DashboardItemsViewModel {
             ),
           ),
     );
-    _subscriptions.add(
-      Observable.combineLatestList(streams).listen(
-        items.add,
-        onError: (err) => debugPrint(err.toString()),
-      ),
-    );
-  }
 
-  void dispose() {
-    _subscriptions.dispose();
-    items.close();
+    yield AvailableDashBoardItems(Observable.combineLatestList(streams));
   }
 
   DashboardItem generateItem({
