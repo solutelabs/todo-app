@@ -19,9 +19,6 @@ class SignInPage extends StatelessWidget {
           CheckActiveSession(),
         ),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Sign in'),
-        ),
         body: _Body(),
       ),
     );
@@ -72,63 +69,81 @@ class __BodyState extends State<_Body> with UITraitsMixin {
           constraints: BoxConstraints(maxWidth: 600),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (email) => BlocProvider.of<LoginBloc>(context).add(
-                    EmailEntered(email),
-                  ),
-                  decoration: InputDecoration(labelText: 'Email'),
-                ),
-                TextField(
-                  obscureText: true,
-                  onChanged: (password) =>
-                      BlocProvider.of<LoginBloc>(context).add(
-                    PasswordEntered(password),
-                  ),
-                  decoration: InputDecoration(labelText: 'Password'),
-                ),
-                BlocBuilder<LoginBloc, LoginState>(
-                  condition: (_, state) => (state == LoginFormValid() ||
-                      state == LoginFormInValid() ||
-                      state == LoginLoading()),
-                  builder: (BuildContext context, state) {
-                    return RaisedButton(
-                      onPressed: state == LoginFormInValid()
-                          ? null
-                          : () => BlocProvider.of<LoginBloc>(context)
-                              .add(LoginButtonPressed()),
-                      child: state == LoginLoading()
-                          ? SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(),
-                            )
-                          : Text('Continue'),
-                    );
-                  },
-                ),
-                Text(
-                  'New User? Enter credentials and we will create an account for you.',
-                  textAlign: TextAlign.center,
-                ),
-                Text.rich(
-                  TextSpan(
-                    text: 'Reset Password',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 16,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'Sign in to create Todos',
+                      style: Theme.of(context).textTheme.title,
                     ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        BlocProvider.of<LoginBloc>(context)
-                            .add(ResetPasswordRequest());
+                    TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (email) =>
+                          BlocProvider.of<LoginBloc>(context).add(
+                        EmailEntered(email),
+                      ),
+                      decoration: InputDecoration(labelText: 'Email'),
+                    ),
+                    TextField(
+                      obscureText: true,
+                      onChanged: (password) =>
+                          BlocProvider.of<LoginBloc>(context).add(
+                        PasswordEntered(password),
+                      ),
+                      decoration: InputDecoration(labelText: 'Password'),
+                    ),
+                    BlocBuilder<LoginBloc, LoginState>(
+                      condition: (_, state) => (state == LoginFormValid() ||
+                          state == LoginFormInValid() ||
+                          state == LoginLoading()),
+                      builder: (BuildContext context, state) {
+                        return RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          onPressed: state == LoginFormInValid()
+                              ? null
+                              : () => BlocProvider.of<LoginBloc>(context)
+                                  .add(LoginButtonPressed()),
+                          child: state == LoginLoading()
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text('Continue'),
+                        );
                       },
-                  ),
+                    ),
+                    Text(
+                      'New User? Enter credentials and we will create an account for you.',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Reset Password',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            BlocProvider.of<LoginBloc>(context)
+                                .add(ResetPasswordRequest());
+                          },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
