@@ -39,6 +39,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginButtonPressed) {
       yield* signIn();
     }
+
+    if (event is ResetPasswordRequest) {
+      if (!isEmailValid(email)) {
+        yield ResetPasswordFailed(error: 'Enter Valid Email');
+        return;
+      }
+
+      try {
+        await authRepository.resetPassword(email: email);
+        yield ResetPasswordSuccess();
+      } on UserNotAvailable catch (_) {
+        yield ResetPasswordFailed(
+            error:
+                'Email is not registered. Kindly enter password and continue to register yourself.');
+      } catch (_) {
+        yield ResetPasswordFailed(error: 'Failed to send Reset password email');
+      }
+    }
   }
 
   Stream<LoginState> checkActiveSession() async* {
@@ -69,5 +87,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (_) {
       yield LoginFailed(error: "Failed to Sign-in!");
     }
+    yield LoginFormValid();
   }
 }

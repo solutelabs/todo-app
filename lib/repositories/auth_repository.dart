@@ -28,6 +28,12 @@ class AuthRepository {
     }
   }
 
+  Future<void> resetPassword({
+    @required String email,
+  }) async {
+    return services.resetPassword(email: email);
+  }
+
   Future<void> saveUserInfo(Map<String, dynamic> data) async {
     await localStorage.set<String>(kTokenKey, data['idToken']);
     await localStorage.set<String>(kUserIdKey, data['localId']);

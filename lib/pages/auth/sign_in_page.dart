@@ -2,6 +2,7 @@ import 'package:checklist/bloc/login/bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
 import 'package:checklist/repositories/auth_repository.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
@@ -52,11 +53,17 @@ class __BodyState extends State<_Body> with UITraitsMixin {
         }
 
         if (state is LoginFailed) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${state.error}'),
-              backgroundColor: Colors.red,
-            ),
+          showMessage(state.error);
+        }
+
+        if (state is ResetPasswordFailed) {
+          showMessage(state.error);
+        }
+
+        if (state is ResetPasswordSuccess) {
+          showMessage(
+            "We have sent an email with reset password link",
+            isError: false,
           );
         }
       },
@@ -84,6 +91,9 @@ class __BodyState extends State<_Body> with UITraitsMixin {
                   decoration: InputDecoration(labelText: 'Password'),
                 ),
                 BlocBuilder<LoginBloc, LoginState>(
+                  condition: (_, state) => (state == LoginFormValid() ||
+                      state == LoginFormInValid() ||
+                      state == LoginLoading()),
                   builder: (BuildContext context, state) {
                     return RaisedButton(
                       onPressed: state == LoginFormInValid()
@@ -104,10 +114,33 @@ class __BodyState extends State<_Body> with UITraitsMixin {
                   'New User? Enter credentials and we will create an account for you.',
                   textAlign: TextAlign.center,
                 ),
+                Text.rich(
+                  TextSpan(
+                    text: 'Reset Password',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(ResetPasswordRequest());
+                      },
+                  ),
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void showMessage(String message, {bool isError = true}) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : null,
       ),
     );
   }

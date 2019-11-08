@@ -17,3 +17,5 @@ class PasswordEntered extends LoginEvent {
 
   const PasswordEntered(this.password);
 }
+
+class ResetPasswordRequest extends LoginEvent {}

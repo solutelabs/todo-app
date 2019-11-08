@@ -33,3 +33,17 @@ class LoginFailed extends LoginState {
   @override
   List<Object> get props => [error];
 }
+
+class ResetPasswordSuccess extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class ResetPasswordFailed extends LoginState {
+  final String error;
+
+  const ResetPasswordFailed({@required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

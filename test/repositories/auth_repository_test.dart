@@ -5,8 +5,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock_dependencies.dart';
 
-
-
 void main() {
   final kTokenKey = 'token';
   final kUserIdKey = 'user_id';
@@ -96,14 +94,16 @@ void main() {
   });
 
   test('Retrive token', () async {
-    when(mockStorage.get<String>(kTokenKey)).thenAnswer((_) => Future.value('token'));
+    when(mockStorage.get<String>(kTokenKey))
+        .thenAnswer((_) => Future.value('token'));
     final token = await repo.getToken();
     expect(token, equals('token'));
     verify(mockStorage.get(kTokenKey));
   });
 
   test('Retrive userId', () async {
-    when(mockStorage.get<String>(kUserIdKey)).thenAnswer((_) => Future.value('user'));
+    when(mockStorage.get<String>(kUserIdKey))
+        .thenAnswer((_) => Future.value('user'));
     final userId = await repo.getUserId();
     expect(userId, 'user');
     verify(mockStorage.get(kUserIdKey));
@@ -113,4 +113,12 @@ void main() {
     await repo.logout();
     verify(mockStorage.clearData());
   });
+
+  test(
+    'Reset password should delegate to service layer with proper args',
+    () async {
+      await repo.resetPassword(email: 'email');
+      verify(mockService.resetPassword(email: 'email'));
+    },
+  );
 }
