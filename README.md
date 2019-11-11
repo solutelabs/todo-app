@@ -4,7 +4,7 @@ To demonstrate how Flutter works across not just Android and iOS, but also on We
 Currently, we have created:
 - Android App
 - iOS App
-- Web App (with a responsive design)
+- [Web App (with a responsive design)](http://checklist-app.codemagic.app/)
 
 Future Scope:
 - PWA
