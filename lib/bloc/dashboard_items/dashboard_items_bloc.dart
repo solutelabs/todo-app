@@ -55,7 +55,7 @@ class DashboardItemsBloc
   }) {
     return DashboardItem(
       mode: mode,
-      title: items.length.toString(),
+      title: items.where((item) => !item.isCompleted).length.toString(),
       subtitle: itemsProvider.modeUtils.getTitle(mode),
     );
   }

@@ -67,6 +67,21 @@ void main() {
     );
   });
 
+  test('Dashboard items title should only consider in-complete items', () {
+    when(mockItemsProvider.repository).thenReturn(mockCheckListItemsRepository);
+    when(mockItemsProvider.watchItems(any)).thenAnswer(
+      (_) => Stream.value(
+          [ChecklistItem(id: '1', description: 'null', isCompleted: true)]),
+    );
+    when(mockItemsProvider.modeUtils).thenReturn(ListModeUtils());
+
+    expectLater(
+      bloc.modeToDashboardItems(ListMode.all),
+      emitsInOrder(
+          [DashboardItem(title: "0", subtitle: "All", mode: ListMode.all)]),
+    );
+  });
+
   test('Generate Item should create models for Dashboard', () {
     when(mockItemsProvider.modeUtils).thenReturn(ListModeUtils());
 
