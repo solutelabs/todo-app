@@ -53,6 +53,20 @@ void main() {
     },
   );
 
+  test('Passing mode should return appropriate dashboard item', () {
+    when(mockItemsProvider.repository).thenReturn(mockCheckListItemsRepository);
+    when(mockItemsProvider.watchItems(any)).thenAnswer(
+      (_) => Stream.value([ChecklistItem(id: 'null', description: 'null')]),
+    );
+    when(mockItemsProvider.modeUtils).thenReturn(ListModeUtils());
+
+    expectLater(
+      bloc.modeToDashboardItems(ListMode.all),
+      emitsInOrder(
+          [DashboardItem(title: "1", subtitle: "All", mode: ListMode.all)]),
+    );
+  });
+
   test('Generate Item should create models for Dashboard', () {
     when(mockItemsProvider.modeUtils).thenReturn(ListModeUtils());
 

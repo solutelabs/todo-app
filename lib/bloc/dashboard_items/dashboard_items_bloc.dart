@@ -35,16 +35,18 @@ class DashboardItemsBloc
       ListMode.thisWeek,
       ListMode.thisMonth,
       ListMode.all,
-    ].map(
-      (mode) => itemsProvider.watchItems(mode).map(
-            (items) => generateItem(
-              items: items,
-              mode: mode,
-            ),
-          ),
-    );
+    ].map(modeToDashboardItems);
 
     yield AvailableDashBoardItems(Observable.combineLatestList(streams));
+  }
+
+  Stream<DashboardItem> modeToDashboardItems(ListMode mode) {
+    return itemsProvider.watchItems(mode).map(
+          (items) => generateItem(
+            items: items,
+            mode: mode,
+          ),
+        );
   }
 
   DashboardItem generateItem({
