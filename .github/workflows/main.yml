@@ -12,6 +12,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'dev'
+      - run: ./scripts/seed_keys.sh
       - run: flutter pub get
       - run: flutter test --coverage
       - run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
