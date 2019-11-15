@@ -1,5 +1,5 @@
 name: checklist
-description: A new Flutter project.
+description: A Simple app to quickly manage checklists.
 version: 1.0.0+1
 
 environment:
