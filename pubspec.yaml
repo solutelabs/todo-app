@@ -1,6 +1,6 @@
 name: checklist
 description: A Simple app to quickly manage checklists.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
