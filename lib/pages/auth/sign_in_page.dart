@@ -1,10 +1,11 @@
+import 'package:checklist/bloc/login/bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
-import 'package:checklist/ui_components/snack_message_widget.dart';
-import 'package:checklist/view_models/sign_in_view_model.dart';
+import 'package:checklist/repositories/auth_repository.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
-import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   static const routeName = '/';
@@ -12,10 +13,14 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = kiwi.Container();
-    return Provider<SignInViewModel>(
-      builder: (context) => c<SignInViewModel>(),
-      dispose: (_, viewModel) => viewModel.dispose(),
-      child: _Body(),
+    return BlocProvider<LoginBloc>(
+      builder: (context) => LoginBloc(authRepository: c<AuthRepository>())
+        ..add(
+          CheckActiveSession(),
+        ),
+      child: Scaffold(
+        body: _Body(),
+      ),
     );
   }
 }
@@ -33,77 +38,124 @@ class __BodyState extends State<_Body> with UITraitsMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SignInViewModel>(context).navigateToHome.listen((_) {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(HomePage.routeName, (_) => false);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SignInViewModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign in'),
-      ),
-      body: Center(
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (BuildContext context, state) {
+        if (state is LoginLoggedIn) {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(HomePage.routeName, (_) => false);
+        }
+
+        if (state is LoginFailed) {
+          showMessage(state.error);
+        }
+
+        if (state is ResetPasswordFailed) {
+          showMessage(state.error);
+        }
+
+        if (state is ResetPasswordSuccess) {
+          showMessage(
+            "We have sent an email with reset password link",
+            isError: false,
+          );
+        }
+      },
+      child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 600),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: viewModel.email.add,
-                  decoration: InputDecoration(labelText: 'Email'),
-                ),
-                TextField(
-                  obscureText: true,
-                  onChanged: viewModel.password.add,
-                  decoration: InputDecoration(labelText: 'Password'),
-                ),
-                StreamBuilder<bool>(
-                  stream: viewModel.isFormValid,
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    return RaisedButton(
-                      child: StreamBuilder<bool>(
-                        stream: viewModel.showProgress,
-                        initialData: false,
-                        builder: (context, snapshot) {
-                          if (snapshot.data) {
-                            return SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Text('Continue');
-                        },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 16,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'Sign in to create Todos',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (email) =>
+                          BlocProvider.of<LoginBloc>(context).add(
+                        EmailEntered(email),
                       ),
-                      onPressed: !snapshot.data
-                          ? null
-                          : () {
-                              if (viewModel.showProgress.value == false) {
-                                viewModel.onTapContinue.add(null);
-                              }
-                            },
-                    );
-                  },
+                      decoration: InputDecoration(labelText: 'Email'),
+                    ),
+                    TextField(
+                      obscureText: true,
+                      onChanged: (password) =>
+                          BlocProvider.of<LoginBloc>(context).add(
+                        PasswordEntered(password),
+                      ),
+                      decoration: InputDecoration(labelText: 'Password'),
+                    ),
+                    BlocBuilder<LoginBloc, LoginState>(
+                      condition: (_, state) => (state == LoginFormValid() ||
+                          state == LoginFormInValid() ||
+                          state == LoginLoading()),
+                      builder: (BuildContext context, state) {
+                        return RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          onPressed: state == LoginFormInValid()
+                              ? null
+                              : () => BlocProvider.of<LoginBloc>(context)
+                                  .add(LoginButtonPressed()),
+                          child: state == LoginLoading()
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text('Continue'),
+                        );
+                      },
+                    ),
+                    Text(
+                      'New User? Enter credentials and we will create an account for you.',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Reset Password',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            BlocProvider.of<LoginBloc>(context)
+                                .add(ResetPasswordRequest());
+                          },
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  'New User? Enter credentials and we will create an account for you.',
-                  textAlign: TextAlign.center,
-                ),
-                SnackMessageWidget(messageStream: viewModel.showMessage),
-              ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void showMessage(String message, {bool isError = true}) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : null,
       ),
     );
   }

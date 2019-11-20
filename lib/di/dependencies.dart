@@ -5,10 +5,6 @@ import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/auth_services.dart';
 import 'package:checklist/services/checklist_network_services.dart';
-import 'package:checklist/view_models/account_manage_view_model.dart';
-import 'package:checklist/view_models/add_item_view_model.dart';
-import 'package:checklist/view_models/dashboard_items_view_model.dart';
-import 'package:checklist/view_models/sign_in_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:localstorage/localstorage.dart' as file_storage;
@@ -25,11 +21,6 @@ abstract class Injector {
   @Register.factory(CheckListNetworkServices)
   @Register.factory(ChecklistItemsDAO)
   @Register.factory(ItemsProvider)
-  //ViewModels
-  @Register.factory(SignInViewModel)
-  @Register.factory(DashboardItemsViewModel)
-  @Register.factory(AddItemViewModel)
-  @Register.factory(AccountManageViewModel)
   void configure();
 }
 

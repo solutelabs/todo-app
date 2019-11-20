@@ -70,4 +70,33 @@ class AuthServices {
       data: {"email": email, "password": password, "returnSecureToken": true},
     );
   }
+
+  Future<void> resetPassword({
+    @required String email,
+  }) async {
+    final key = await firebaseAPIKey();
+    try {
+      await dioClient.post(
+        APIEndPoints.resetPasswordUrl,
+        queryParameters: {'key': key},
+        options: Options(
+          contentType: 'application/json',
+        ),
+        data: {
+          "email": email,
+          "requestType": "PASSWORD_RESET",
+        },
+      );
+    } on DioError catch (err) {
+      if (err.response == null || err.response.data == null) {
+        rethrow;
+      }
+      if (IndexWalker(err.response.data)["error"]["message"].value ==
+          "EMAIL_NOT_FOUND") {
+        throw UserNotAvailable();
+      }
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

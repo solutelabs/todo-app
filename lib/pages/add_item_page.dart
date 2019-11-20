@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:checklist/ui_components/snack_message_widget.dart';
+import 'package:checklist/bloc/add_item/add_item_bloc.dart';
+import 'package:checklist/bloc/add_item/bloc.dart';
+import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/utils/datetime_utils.dart';
-import 'package:checklist/view_models/add_item_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
-import 'package:provider/provider.dart';
 
 class AddItemPage extends StatelessWidget {
   static const routeName = '/addItem';
@@ -13,12 +14,11 @@ class AddItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = kiwi.Container();
-    return Provider<AddItemViewModel>(
-      builder: (_) => c<AddItemViewModel>(),
-      dispose: (_, bloc) => bloc.dispose(),
-      child: Builder(
-        builder: (_) => _AddItemPageBody(),
+    return BlocProvider<AddItemBloc>(
+      builder: (_) => AddItemBloc(
+        checklistItemsRepository: c<ChecklistItemsRepository>(),
       ),
+      child: _AddItemPageBody(),
     );
   }
 }
@@ -29,27 +29,8 @@ class _AddItemPageBody extends StatefulWidget {
 }
 
 class __AddItemPageStateBody extends State<_AddItemPageBody> {
-  StreamSubscription _onItemSavedSubscription;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _onItemSavedSubscription ??= Provider.of<AddItemViewModel>(context)
-          .onItemSaved
-          .listen((_) => Navigator.of(context).pop());
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _onItemSavedSubscription?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<AddItemViewModel>(context);
     return GestureDetector(
       onTap: dismissKeyboard,
       child: Scaffold(
@@ -60,22 +41,36 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
               icon: Icon(Icons.check),
               onPressed: () {
                 dismissKeyboard();
-                viewModel.onSaveTap.add(null);
+                BlocProvider.of<AddItemBloc>(context).add(OnTapSave());
               },
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SnackMessageWidget(
-                messageStream: viewModel.onError,
-              ),
-              Expanded(
-                child: TextField(
-                  onChanged: (text) => viewModel.description.add(text),
+        body: BlocListener<AddItemBloc, AddItemState>(
+          listener: (BuildContext context, AddItemState state) {
+            if (state is AddItemFailed) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${state.error}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+            if (state is AddItemSuccess) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextField(
+                  onChanged: (text) =>
+                      BlocProvider.of<AddItemBloc>(context).add(
+                    DescriptionAdded(text),
+                  ),
                   style: Theme.of(context).textTheme.title,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
@@ -86,23 +81,25 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
                         .copyWith(color: Colors.grey.shade400),
                   ),
                 ),
-              ),
-              StreamBuilder<String>(
-                stream: viewModel.targetDateString,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Date: ${snapshot.data}',
-                        style: Theme.of(context).textTheme.subhead,
-                      ),
-                    );
-                  }
-                  return SizedBox();
-                },
-              ),
-            ],
+                Expanded(
+                  child: SizedBox(),
+                ),
+                BlocBuilder<AddItemBloc, AddItemState>(
+                  builder: (BuildContext context, AddItemState state) {
+                    if (state is TargetDateChanged) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Date: ${state.formattedDate}',
+                          style: Theme.of(context).textTheme.subhead,
+                        ),
+                      );
+                    }
+                    return SizedBox();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -116,27 +113,25 @@ class __AddItemPageStateBody extends State<_AddItemPageBody> {
     );
   }
 
+  void dismissKeyboard() {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
+
   Future<void> onTapCalendar(BuildContext context) async {
     final startDate = DateTime(1900);
     final endDate = DateTime(2100);
-    final viewModel = Provider.of<AddItemViewModel>(context);
     final date = await showDatePicker(
       context: context,
       firstDate: startDate,
-      initialDate: viewModel.targetDate.hasValue
-          ? viewModel.targetDate.value
+      initialDate: BlocProvider.of<AddItemBloc>(context).targetDate != null
+          ? BlocProvider.of<AddItemBloc>(context).targetDate
           : DateTime.now(),
       lastDate: endDate,
     );
 
     if (date != null) {
-      final viewModel = Provider.of<AddItemViewModel>(context);
       final targetDate = DateTimeUtils().startOfDay(date);
-      viewModel.targetDate.add(targetDate);
+      BlocProvider.of<AddItemBloc>(context).add(TargetDateSelected(targetDate));
     }
-  }
-
-  void dismissKeyboard() {
-    FocusScope.of(context).requestFocus(FocusNode());
   }
 }

@@ -1,4 +1,4 @@
-package com.example.checklist;
+package com.solutelabs.checklistapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

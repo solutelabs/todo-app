@@ -1,8 +1,9 @@
+import 'package:checklist/bloc/item_details/bloc.dart';
+import 'package:checklist/bloc/item_details/item_details_bloc.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
-import 'package:checklist/view_models/item_details_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
-import 'package:provider/provider.dart';
 
 class ItemDetailsView extends StatelessWidget {
   final String id;
@@ -21,15 +22,12 @@ class ItemDetailsView extends StatelessWidget {
     final c = kiwi.Container();
     return Container(
       color: isFullScreen ? null : Colors.black12,
-      child: Provider<ItemDetailsViewModel>(
-        builder: (_) => ItemDetailsViewModel(
-          itemId: id,
-          repository: c<ChecklistItemsRepository>(),
-        ),
-        dispose: (_, viewModel) => viewModel.dispose(),
+      child: BlocProvider<ItemDetailsBloc>(
+        builder: (_) => ItemDetailsBloc(
+          checklistItemsRepository: c<ChecklistItemsRepository>(),
+        )..add(FetchItemDetails(id)),
         child: Builder(
           builder: (context) {
-            final viewModel = Provider.of<ItemDetailsViewModel>(context);
             return SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -46,27 +44,27 @@ class ItemDetailsView extends StatelessWidget {
                           ),
                         ],
                       ),
-                    StreamBuilder<String>(
-                      stream: viewModel.title,
-                      initialData: '',
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? '',
-                          style: Theme.of(context).textTheme.title,
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    StreamBuilder<String>(
-                      stream: viewModel.date,
-                      initialData: '',
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? '',
-                          style: Theme.of(context).textTheme.subtitle,
-                        );
+                    BlocBuilder<ItemDetailsBloc, ItemDetailsState>(
+                      builder: (BuildContext context, state) {
+                        if (state is ItemDetailsAvailable) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                state.title ?? '',
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                state.date ?? '',
+                                style: Theme.of(context).textTheme.subtitle,
+                              )
+                            ],
+                          );
+                        }
+                        return SizedBox();
                       },
                     ),
                   ],

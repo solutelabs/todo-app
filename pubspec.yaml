@@ -1,6 +1,6 @@
 name: checklist
-description: A new Flutter project.
-version: 1.0.0+1
+description: A Simple app to quickly manage checklists.
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -16,6 +16,7 @@ dependencies:
   dio: ^3.0.3
   localstorage: ^3.0.0+2
   kiwi: ^0.2.0
+  flutter_bloc: ^2.0.0
 
 
 dev_dependencies:
@@ -23,7 +24,6 @@ dev_dependencies:
     sdk: flutter
   mockito: ^4.1.1
   build_runner: ^1.7.2
-  flutter_coverage_badge: ^0.0.1+1
   kiwi_generator: ^0.4.0
 
 flutter:

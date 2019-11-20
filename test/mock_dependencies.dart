@@ -1,4 +1,5 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
+import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:checklist/repositories/auth_repository.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
@@ -21,6 +22,8 @@ class MockNetworkService extends Mock implements CheckListNetworkServices {}
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 class MockDioClient extends Mock implements Dio {}
+
+class MockItemsProvider extends Mock implements ItemsProvider {}
 
 class MockCheckListItemsRepository extends Mock
     implements ChecklistItemsRepository {}

@@ -1,10 +1,10 @@
-# Checklist-App [![Codemagic build status](https://api.codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/status_badge.svg)](https://codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/latest_build) ![Coverage](https://raw.githubusercontent.com/solutelabs/checklist-app/master/coverage_badge.svg?sanitize=true) ![MadeBy](https://img.shields.io/badge/madeby-solutelabs-blue) ![Twitter Follow](https://img.shields.io/twitter/follow/solutelabs?label=Follow%20SoluteLabs&style=social)
+# Checklist-App [![Codemagic build status](https://api.codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/status_badge.svg)](https://codemagic.io/apps/5da0203a9f20ef000de2e6fd/5da0203a9f20ef000de2e6fc/latest_build) [![codecov](https://codecov.io/gh/solutelabs/checklist-app/branch/feature%2Fbloc_implementation/graph/badge.svg)](https://codecov.io/gh/solutelabs/checklist-app) ![MadeBy](https://img.shields.io/badge/madeby-solutelabs-blue) ![Twitter Follow](https://img.shields.io/twitter/follow/solutelabs?label=Follow%20SoluteLabs&style=social)
 
 To demonstrate how Flutter works across not just Android and iOS, but also on Web - we've setup this project - a simple ToDo App with a responsive design on the Web.
 Currently, we have created:
 - Android App
 - iOS App
-- Web App (with a responsive design)
+- [Web App (with a responsive design)](http://checklist-app.codemagic.app/)
 
 Future Scope:
 - PWA

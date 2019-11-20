@@ -149,4 +149,66 @@ main() {
       throwsException,
     );
   });
+
+  test(
+      'Passing non existed email to reset passoword should throw UserNotAvailable',
+      () async {
+    when(
+      mockDio.post(
+        any,
+        data: anyNamed('data'),
+        queryParameters: anyNamed('queryParameters'),
+        options: anyNamed('options'),
+      ),
+    ).thenThrow(
+      DioError(
+        response: Response(
+          data: {
+            "error": {
+              "code": 400,
+              "message": "EMAIL_NOT_FOUND",
+              "errors": [
+                {
+                  "message": "EMAIL_NOT_FOUND",
+                  "domain": "global",
+                  "reason": "invalid"
+                }
+              ]
+            }
+          },
+          statusCode: 400,
+        ),
+      ),
+    );
+
+    expectLater(
+      () => service.resetPassword(email: "email"),
+      throwsA(
+        predicate((e) => e is UserNotAvailable),
+      ),
+    );
+  });
+
+  test(
+      "If error doesn't have data, it should rethrow exception while Reset password",
+      () async {
+    when(mockDio.post(
+      any,
+      data: anyNamed('data'),
+      queryParameters: anyNamed('queryParameters'),
+      options: anyNamed('options'),
+    )).thenThrow(
+      DioError(
+        response: Response(
+          data: null,
+          statusCode: 400,
+        ),
+      ),
+    );
+
+    expectLater(
+      () => service.resetPassword(email: "email"),
+      throwsException,
+    );
+  });
 }
