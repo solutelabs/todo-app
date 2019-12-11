@@ -11,3 +11,5 @@ Future Scope:
 - Desktop App
 
 To get started with Flutter, read [our blog here](https://blog.solutelabs.com/flutter-for-your-next-product-idea-everything-you-need-to-know-f5179a925524)
+
+Hosted on gh-pages

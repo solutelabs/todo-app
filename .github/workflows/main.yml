@@ -16,4 +16,3 @@ jobs:
       - run: flutter pub get
       - run: flutter test --coverage
       - run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
-      - run: flutter build ios
