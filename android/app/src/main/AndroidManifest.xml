@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Checklist"
+        android:label="ToDo App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="com.solutelabs.checklistapp.MainActivity"
