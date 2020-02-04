@@ -1,7 +1,6 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:checklist/repositories/auth_repository.dart';
-import 'package:checklist/services/checklist_network_services.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 

@@ -1,7 +1,6 @@
-import 'package:shared_code/shared_code.dart';
 import 'package:checklist/providers/local_storage_provider.dart';
-import 'package:checklist/services/auth_services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_code/shared_code.dart';
 
 class AuthRepository {
   final kTokenKey = 'token';

@@ -1,6 +1,6 @@
 import 'package:shared_code/shared_code.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 
 class CheckListNetworkServices {
   final Dio dioClient;
