@@ -1,12 +1,15 @@
-import 'package:checklist/constants.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthServices {
   final Dio dioClient;
+  final String firebaseApiKey;
 
-  AuthServices({@required this.dioClient});
+  AuthServices({
+    @required this.dioClient,
+    @required this.firebaseApiKey,
+  });
 
   Future<Map<String, dynamic>> signUp({
     @required String email,
@@ -59,10 +62,9 @@ class AuthServices {
     String email,
     String password,
   }) async {
-    final key = await firebaseAPIKey();
     return dioClient.post(
       url,
-      queryParameters: {'key': key},
+      queryParameters: {'key': firebaseApiKey},
       options: Options(
         contentType: 'application/json',
       ),
@@ -73,11 +75,10 @@ class AuthServices {
   Future<void> resetPassword({
     @required String email,
   }) async {
-    final key = await firebaseAPIKey();
     try {
       await dioClient.post(
         APIEndPoints.resetPasswordUrl,
-        queryParameters: {'key': key},
+        queryParameters: {'key': firebaseApiKey},
         options: Options(
           contentType: 'application/json',
         ),

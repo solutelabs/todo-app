@@ -8,7 +8,7 @@ import '../mock_dependencies.dart';
 
 main() {
   final mockDio = MockDioClient();
-  final service = AuthServices(dioClient: mockDio);
+  final service = AuthServices(dioClient: mockDio, firebaseApiKey: "test_key");
   TestWidgetsFlutterBinding.ensureInitialized();
   test('Passing properties should signUp and return id token & localId',
       () async {

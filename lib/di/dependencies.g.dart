@@ -16,7 +16,6 @@ class _$Injector extends Injector {
         authRepository: c<AuthRepository>()));
     container.registerFactory((c) => AuthRepository(
         services: c<AuthServices>(), localStorage: c<LocalStorage>()));
-    container.registerFactory((c) => AuthServices(dioClient: c<Dio>()));
     container
         .registerFactory((c) => CheckListNetworkServices(dioClient: c<Dio>()));
     container.registerFactory((c) => ChecklistItemsDAO());
