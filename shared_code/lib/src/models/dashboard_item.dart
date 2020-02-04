@@ -1,5 +1,5 @@
-import 'package:checklist/models/list_mode.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_code/src/models/list_mode.dart';
 import 'package:meta/meta.dart';
 
 class DashboardItem extends Equatable {

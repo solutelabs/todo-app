@@ -1,7 +1,6 @@
-import 'package:shared_code/shared_code.dart';
-import 'package:checklist/models/checklist_item.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_code/shared_code.dart';
 
 class ChecklistItemsDAO {
   final _items = BehaviorSubject<List<ChecklistItem>>.seeded([]);

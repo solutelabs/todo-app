@@ -1,4 +1,4 @@
-import 'package:checklist/models/list_mode.dart';
+import 'package:shared_code/src/models/models.dart';
 import 'package:shared_code/src/utils/datetime_utils.dart';
 
 class ListModeUtils {

@@ -1,5 +1,5 @@
 import 'package:checklist/di/dependencies.dart' as di;
-import 'package:checklist/models/list_mode.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/pages/add_item_page.dart';
 import 'package:checklist/pages/auth/sign_in_page.dart';
 import 'package:checklist/pages/home/home_page.dart';

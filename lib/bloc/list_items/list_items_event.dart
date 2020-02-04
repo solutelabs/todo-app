@@ -1,5 +1,4 @@
-import 'package:checklist/models/checklist_item.dart';
-import 'package:checklist/models/list_mode.dart';
+import 'package:shared_code/shared_code.dart';
 
 abstract class ListItemsEvent {
   const ListItemsEvent();

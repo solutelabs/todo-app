@@ -1,12 +1,10 @@
 import 'package:checklist/bloc/list_items/bloc.dart';
-import 'package:checklist/models/checklist_item.dart';
-import 'package:checklist/models/list_mode.dart';
 import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/ui_components/checklist_card.dart';
-import 'package:shared_code/shared_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
+import 'package:shared_code/shared_code.dart';
 
 class ItemsListView extends StatelessWidget {
   final ListMode listMode;

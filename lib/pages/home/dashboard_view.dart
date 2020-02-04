@@ -1,8 +1,7 @@
 import 'package:checklist/bloc/dashboard_items/bloc.dart';
 import 'package:checklist/bloc/dashboard_items/dashboard_items_bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
-import 'package:checklist/models/dashboard_item.dart';
-import 'package:checklist/models/list_mode.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/ui_components/dashboard_stats_card.dart';
 import 'package:flutter/material.dart';

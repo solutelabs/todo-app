@@ -1,5 +1,5 @@
 import 'package:checklist/bloc/item_details/bloc.dart';
-import 'package:checklist/models/checklist_item.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

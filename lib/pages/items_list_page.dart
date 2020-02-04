@@ -1,4 +1,4 @@
-import 'package:checklist/models/list_mode.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/pages/home/items_list_view.dart';
 import 'package:checklist/pages/item_details/item_details_page.dart';
 import 'package:flutter/material.dart';

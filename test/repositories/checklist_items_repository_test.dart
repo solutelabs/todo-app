@@ -1,12 +1,10 @@
 import 'package:shared_code/shared_code.dart';
-import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:checklist/services/checklist_network_services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock_dependencies.dart';
-
 
 void main() {
   ChecklistItemsRepository repo;

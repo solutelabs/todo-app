@@ -1,4 +1,3 @@
-import 'package:checklist/models/list_mode.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 

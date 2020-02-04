@@ -1,4 +1,4 @@
-import 'package:checklist/models/checklist_item.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ListItemsState extends Equatable {
