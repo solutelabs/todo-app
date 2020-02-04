@@ -1,8 +1,5 @@
-import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
-import '../mock_dependencies.dart';
+import 'package:shared_code/shared_code.dart';
 
 main() {
   final tokenKey = 'token_key';
@@ -21,7 +18,7 @@ main() {
     });
   });
 
-  group('FileBased storage', () {
+  /*group('FileBased storage', () {
     FileBasedStorage storage;
     MockFileStorage mockFileStorage;
 
@@ -46,5 +43,5 @@ main() {
       await storage.clearData();
       verify(mockFileStorage.clear());
     });
-  });
+  });*/
 }

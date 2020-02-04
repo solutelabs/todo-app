@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:checklist/providers/items_provider.dart';
-import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -33,8 +31,8 @@ void setup() async {
   Container()
       .registerSingleton((c) => file_storage.LocalStorage('session_data'));
 
-  Container().registerFactory<LocalStorage, FileBasedStorage>(
-      (c) => FileBasedStorage(fileStorage: c<file_storage.LocalStorage>()));
+  Container()
+      .registerFactory<LocalStorage, InMemoryStorage>((c) => InMemoryStorage());
 
   injector.configure();
 }

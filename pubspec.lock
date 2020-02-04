@@ -450,7 +450,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: e9fd5d6370981e52b1b0bfeeb5404080763fc76b
+      resolved-ref: b2428363188b23a71dc705841a965de114ff47db
       url: "git@github.com:milind-mevada-stl/checklist_shared_code.git"
     source: git
     version: "0.0.0"

@@ -1,5 +1,4 @@
 import 'package:checklist/bloc/list_items/bloc.dart';
-import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/ui_components/checklist_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,12 +1,11 @@
 import 'package:checklist/bloc/dashboard_items/bloc.dart';
 import 'package:checklist/bloc/dashboard_items/dashboard_items_bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
-import 'package:shared_code/shared_code.dart';
-import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/ui_components/dashboard_stats_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
+import 'package:shared_code/shared_code.dart';
 
 class DashboardView extends StatelessWidget with UITraitsMixin {
   final void Function(ListMode) onModeSelected;
