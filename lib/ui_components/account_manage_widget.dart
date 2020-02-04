@@ -11,7 +11,7 @@ class AccountManageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = kiwi.Container();
     return BlocProvider<AccountManageBloc>(
-      builder: (context) => AccountManageBloc(c<AuthRepository>()),
+      create: (context) => AccountManageBloc(c<AuthRepository>()),
       child: Builder(
         builder: (BuildContext context) {
           return BlocListener<AccountManageBloc, AccountManageState>(

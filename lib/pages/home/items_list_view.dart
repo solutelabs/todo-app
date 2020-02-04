@@ -21,7 +21,7 @@ class ItemsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = kiwi.Container();
     return BlocProvider<ListItemsBloc>(
-      builder: (context) => ListItemsBloc(
+      create: (context) => ListItemsBloc(
         itemsProvider: c<ItemsProvider>(),
       )..add(FetchListItems(listMode)),
       child: Builder(

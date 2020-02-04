@@ -14,7 +14,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = kiwi.Container();
     return BlocProvider<LoginBloc>(
-      builder: (context) => LoginBloc(authRepository: c<AuthRepository>())
+      create: (context) => LoginBloc(authRepository: c<AuthRepository>())
         ..add(
           CheckActiveSession(),
         ),

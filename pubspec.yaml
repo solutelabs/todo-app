@@ -19,7 +19,8 @@ dependencies:
   flutter_bloc: ^2.0.0
   #Shared Dart Module
   shared_code:
-    path: ./shared_code
+    git:
+      url: git@github.com:milind-mevada-stl/checklist_shared_code.git
 
 
 dev_dependencies:

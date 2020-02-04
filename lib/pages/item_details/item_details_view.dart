@@ -23,7 +23,7 @@ class ItemDetailsView extends StatelessWidget {
     return Container(
       color: isFullScreen ? null : Colors.black12,
       child: BlocProvider<ItemDetailsBloc>(
-        builder: (_) => ItemDetailsBloc(
+        create: (_) => ItemDetailsBloc(
           checklistItemsRepository: c<ChecklistItemsRepository>(),
         )..add(FetchItemDetails(id)),
         child: Builder(

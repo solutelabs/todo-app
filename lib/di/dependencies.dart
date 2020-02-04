@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:checklist/daos/checklist_items_dao.dart';
 import 'package:checklist/providers/items_provider.dart';
 import 'package:checklist/providers/local_storage_provider.dart';
 import 'package:shared_code/shared_code.dart';

@@ -21,7 +21,7 @@ class DashboardView extends StatelessWidget with UITraitsMixin {
     final c = kiwi.Container();
     final traits = deriveWidthTrait(context);
     return BlocProvider<DashboardItemsBloc>(
-      builder: (context) => DashboardItemsBloc(
+      create: (context) => DashboardItemsBloc(
         itemsProvider: c<ItemsProvider>(),
       )..add(FetchDashBoardItems()),
       child: Builder(

@@ -1,6 +1,5 @@
-import 'package:checklist/daos/checklist_items_dao.dart';
-import 'package:shared_code/shared_code.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_code/shared_code.dart';
 
 void main() {
   Future<void> arrange(ChecklistItemsDAO dao) async {

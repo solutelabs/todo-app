@@ -14,7 +14,7 @@ class AddItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = kiwi.Container();
     return BlocProvider<AddItemBloc>(
-      builder: (_) => AddItemBloc(
+      create: (_) => AddItemBloc(
         checklistItemsRepository: c<ChecklistItemsRepository>(),
       ),
       child: _AddItemPageBody(),
