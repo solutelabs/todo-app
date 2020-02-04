@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:checklist/bloc/add_item/add_item_bloc.dart';
 import 'package:checklist/bloc/add_item/bloc.dart';
 import 'package:checklist/repositories/checklist_items_repository.dart';
-import 'package:checklist/utils/datetime_utils.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;

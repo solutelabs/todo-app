@@ -1,5 +1,5 @@
 import 'package:checklist/models/list_mode.dart';
-import 'package:checklist/utils/datetime_utils.dart';
+import 'package:shared_code/src/utils/datetime_utils.dart';
 
 class ListModeUtils {
   final datetimeUtils = DateTimeUtils();

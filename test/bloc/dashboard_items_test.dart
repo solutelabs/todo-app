@@ -2,7 +2,7 @@ import 'package:checklist/bloc/dashboard_items/bloc.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/models/dashboard_item.dart';
 import 'package:checklist/models/list_mode.dart';
-import 'package:checklist/utils/list_mode_utils.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

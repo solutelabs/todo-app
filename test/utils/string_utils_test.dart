@@ -1,4 +1,4 @@
-import 'package:checklist/utils/string_utils.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {

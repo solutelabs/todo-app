@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:checklist/bloc/login/bloc.dart';
 import 'package:checklist/repositories/auth_repository.dart';
-import 'package:checklist/utils/string_utils.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:checklist/exceptions/custom_exceptions.dart';
