@@ -1,7 +1,7 @@
 import 'package:checklist/bloc/login/bloc.dart';
 import 'package:checklist/mixins/ui_traits_mixin.dart';
 import 'package:checklist/pages/home/home_page.dart';
-import 'package:checklist/repositories/auth_repository.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,7 +1,7 @@
 import 'package:checklist/bloc/account_manage/account_manage_bloc.dart';
 import 'package:checklist/bloc/account_manage/bloc.dart';
 import 'package:checklist/pages/auth/sign_in_page.dart';
-import 'package:checklist/repositories/auth_repository.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;

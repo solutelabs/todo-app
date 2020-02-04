@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_code/shared_code.dart';
 

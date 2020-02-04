@@ -1,4 +1,3 @@
-import 'package:checklist/repositories/checklist_items_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_code/shared_code.dart';
