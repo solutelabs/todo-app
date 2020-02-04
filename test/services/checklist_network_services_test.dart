@@ -1,5 +1,5 @@
 import 'package:checklist/constants.dart';
-import 'package:checklist/exceptions/custom_exceptions.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:checklist/services/checklist_network_services.dart';
 import 'package:dio/dio.dart';

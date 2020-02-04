@@ -5,7 +5,6 @@ import 'package:checklist/repositories/auth_repository.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:checklist/exceptions/custom_exceptions.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;

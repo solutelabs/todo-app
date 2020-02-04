@@ -1,4 +1,4 @@
-import 'package:checklist/exceptions/custom_exceptions.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';

@@ -1,5 +1,5 @@
 import 'package:checklist/daos/checklist_items_dao.dart';
-import 'package:checklist/exceptions/custom_exceptions.dart';
+import 'package:shared_code/shared_code.dart';
 import 'package:checklist/models/checklist_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 

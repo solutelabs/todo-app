@@ -1,5 +1,4 @@
 import 'package:checklist/constants.dart';
-import 'package:checklist/exceptions/custom_exceptions.dart';
 import 'package:shared_code/shared_code.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
